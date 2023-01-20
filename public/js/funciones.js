@@ -4,6 +4,8 @@ $(document).ready(function() {
 	let puntFinalJugadores = [];
 	let numJugadores = 1;
 	let numCarasDado = 6;
+	let swPoker = true;
+	let figurasPoker = ["", "7", "8", "J", "Q", "K", "•"];
 	let numDados = 5;
 	let numTiradas = 3;
 
@@ -21,7 +23,11 @@ $(document).ready(function() {
 			for (let tirada = 1; tirada <= numTiradas; tirada++) {
 				console.log("\t\tTirada: " + tirada);
 				for (let dado = 1; dado <= numDados; dado++) {
+					//damos por hecho que jugamos con figuras de poker
 					let num = Math.ceil(Math.random() * numCarasDado);
+					if (swPoker) {
+						num = figurasPoker[num];
+					} 
 					console.log("\t\t\tDado " + dado + ": " + num);
 				}
 			}
