@@ -14,24 +14,27 @@ $(document).ready(function() {
 		puntFinalJugadores[i] = 0;
 	}
 
+	$("#tablero").append("Comienzo de Partida<br>");
 	for (let turno = 1; turno <= numCarasDado; turno++) {
 		//posibilidad de interrumpir juego?
-		console.log("Turno: " + turno);
+		$("#tablero").append("&nbsp; Turno " + turno + "<br>");
 		for (let jugador = 1; jugador <= numJugadores; jugador++) {
 			//posibilidad de comparar puntuaciones de jugadores
-			console.log("\tJugador: " + jugador);
+			$("#tablero").append("&nbsp; &nbsp; Jugador " + jugador + "<br>");
 			for (let tirada = 1; tirada <= numTiradas; tirada++) {
-				console.log("\t\tTirada: " + tirada);
+				$("#tablero").append("&nbsp; &nbsp; &nbsp; Tirada " + tirada + "<br>");
+				let tiradas = "";
 				for (let dado = 1; dado <= numDados; dado++) {
 					//damos por hecho que jugamos con figuras de poker
 					let num = Math.ceil(Math.random() * numCarasDado);
 					if (swPoker) {
 						num = figurasPoker[num];
-					} 
-					console.log("\t\t\tDado " + dado + ": " + num);
+					}
+					tiradas += num + " ";
 				}
+				$("#tablero").append("&nbsp; &nbsp; &nbsp; &nbsp; " + tiradas + "<br>");
 			}
-			//console.log("Puntuación de Jugador " + jugador + ": " + puntFinalJugadores[jugador]);
+			$("#tablero").append("&nbsp; Puntuación de Jugador " + jugador + ": " + puntFinalJugadores[jugador] + "<br>");
 		}
 	}
 
