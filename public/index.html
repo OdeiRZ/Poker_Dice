@@ -17,6 +17,52 @@
 		<script type="text/javascript" src="js/funciones.js"></script>
 	</head>
 	<body>
-		<div id="tablero"></div>
+		<!--<div id="tablero"></div>-->
+		<span id="panelJugadores">
+			<label for="numJugadores">Jugadores:</label>
+			<select name="numJugadores" id="numJugadores">
+				<option value="1" selected>1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+			</select>
+		</span>
+		<span id="panelDados">
+			<label for="numDados">Número de Dados:</label>
+			<select name="numDados" id="numDados">
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5" selected>5</option>
+				<option value="6">6</option>
+			</select>
+		</span>
+		<span id="panelCarasDado">
+			<label for="numCarasDado">Número de Caras:</label>
+			<select name="numCarasDado" id="numCarasDado">
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6" selected>6</option>
+			</select>
+		</span>
+		<span id="panelTiradas">
+			<label for="numTiradas">Número de Tiradas:</label>
+			<select name="numTiradas" id="numTiradas">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3" selected>3</option>
+			</select>
+		</span>
+		<span id="panelSwPoker">
+			<label for="swPoker">Dados de Poker:</label>
+			<input type="checkbox" name="swPoker" id="swPoker" checked>
+		</span>
+		<span id="panelBtnInicio">
+			<input type="button" name="btnInicio" id="btnInicio" value="Comenzar" onclick="comenzarJuego()">
+		</span>
+		<span id="panelBtnFin">
+			<input type="button" name="btnFin" id="btnFin" value="Finalizar" onclick="finalizarJuego()">
+		</span>
 	</body>
 </html>
