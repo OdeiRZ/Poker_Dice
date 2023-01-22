@@ -17,7 +17,6 @@
 		<script type="text/javascript" src="js/funciones.js"></script>
 	</head>
 	<body>
-		<!--<div id="tablero"></div>-->
 		<span id="panelJugadores">
 			<label for="numJugadores">Jugadores:</label>
 			<select name="numJugadores" id="numJugadores">
@@ -56,13 +55,17 @@
 		</span>
 		<span id="panelSwPoker">
 			<label for="swPoker">Dados de Poker:</label>
-			<input type="checkbox" name="swPoker" id="swPoker" checked>
+			<input type="checkbox" id="swPoker" checked>
 		</span>
 		<span id="panelBtnInicio">
-			<input type="button" name="btnInicio" id="btnInicio" value="Comenzar" onclick="comenzarJuego()">
+			<input type="button" id="btnInicio" value="Comenzar" onclick="comenzarJuego()">
+		</span>
+		<span id="panelBtnTirada">
+			<input type="button" id="btnTirada" value="Realizar Tirada" onclick="realizarTirada()">
 		</span>
 		<span id="panelBtnFin">
-			<input type="button" name="btnFin" id="btnFin" value="Finalizar" onclick="finalizarJuego()">
+			<input type="button" id="btnFin" value="Finalizar" onclick="finalizarJuego()">
 		</span>
+		<div id="tablero"></div>
 	</body>
 </html>

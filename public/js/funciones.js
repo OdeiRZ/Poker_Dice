@@ -118,7 +118,23 @@ function ocultarBotones() {
 	$("#panelTiradas").hide();
 	$("#panelSwPoker").hide();
 	$("#panelBtnInicio").hide();
+	$("#panelBtnTirada").show();
 	$("#panelBtnFin").show();
+}
+
+function realizarTirada() {
+	console.log("_________________");
+	console.log("Realizamos Tirada");
+	console.log("_________________");
+
+	for (let dado = 1; dado <= numDados; dado++) {
+		let num = Math.ceil(Math.random() * numCarasDado);
+		if (swPoker) {
+			num = figurasPoker[num];
+		}
+		$("#tablero").append('<input type="checkbox" id="'+dado+'_'+tirada+'_'+jugador+'_'+turno+'" name="'+dado+'_'+tirada+'_'+jugador+'_'+turno+'" value="'+num+'">');
+		$("#tablero").append('<label for="'+dado+'_'+tirada+'_'+jugador+'_'+turno+'">'+num+'</label>');
+	}
 }
 
 function finalizarJuego() {
@@ -133,7 +149,8 @@ function finalizarJuego() {
 }
 
 function reiniciarBotones() {
-	console.log("Botones Reiniciados");
+	console.log("Botones Reiniciados"); 
+	$("#panelBtnTirada").hide();
 	$("#panelBtnFin").hide();
 	$("#panelJugadores").show();
 	$("#panelDados").show();
