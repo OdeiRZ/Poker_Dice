@@ -1,42 +1,28 @@
 
-var numJugadores;
-var numCarasDado;
-var numDados;
-var numTiradas;
+var numJugadoresMax;
+var numJugadorActual;
+var numTurnoActual;
+var numCarasDadoMax;
+var numDadosMax;
+var numTiradasMax;
+var numTiradaJugador;
 var swPoker;
 var puntFinalJugadores = [];
 const figurasPoker = ["", "7", "8", "J", "Q", "K", "•"];
 
 $(document).ready(function() {
 	//https://programadorwebvalencia.com/sencillo-boton-on-off-html-y-css/
-/*
-	var numJugadores = 1;
-	var numCarasDado = 6;
-	var numDados = 5;
-	var numTiradas = 3;
-	var swPoker = true;
-	var puntFinalJugadores = [];
-	const figurasPoker = ["", "7", "8", "J", "Q", "K", "•"];
-
-	//inicializamos puntuaciones de jugadores
-	for (let i = 1; i <= numJugadores; i++) {
-		puntFinalJugadores[i] = 0;
-	}
-
-	$("#tablero").append("Comienzo de Partida<br>");
-	for (let turno = 1; turno <= numCarasDado; turno++) {
-		//posibilidad de interrumpir juego?
+/*	$("#tablero").append("Comienzo de Partida<br>");
+	for (let turno = 1; turno <= numCarasDadoMax; turno++) {
 		$("#tablero").append("&nbsp; &nbsp; Turno " + turno + "<br>");
-		for (let jugador = 1; jugador <= numJugadores; jugador++) {
-			//posibilidad de comparar puntuaciones de jugadores
+		for (let jugador = 1; jugador <= numJugadoresMax; jugador++) {
 			$("#tablero").append("&nbsp; &nbsp; &nbsp; &nbsp; Jugador " + jugador + "<br>");
-			for (let tirada = 1; tirada <= numTiradas; tirada++) {
+			for (let tirada = 1; tirada <= numTiradasMax; tirada++) {
 				$("#tablero").append("&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Tirada " + tirada + "<br>");
 				let tiradas = "";
 				$("#tablero").append("&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ");
-				for (let dado = 1; dado <= numDados; dado++) {
-					//damos por hecho que jugamos con figuras de poker
-					let num = Math.ceil(Math.random() * numCarasDado);
+				for (let dado = 1; dado <= numDadosMax; dado++) {
+					let num = Math.ceil(Math.random() * numCarasDadoMax);
 					if (swPoker) {
 						num = figurasPoker[num];
 					}
@@ -45,28 +31,10 @@ $(document).ready(function() {
 					$("#tablero").append('<label for="'+dado+'_'+tirada+'_'+jugador+'_'+turno+'">'+num+'</label>');
 				}
 				$("#tablero").append("<br>");
-				//$("#tablero").append("&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; " + tiradas + "<br>");
 			}
 			$("#tablero").append("&nbsp; &nbsp; Puntuación de Jugador " + jugador + ": " + puntFinalJugadores[jugador] + "<br>");
 		}
-	}
-*/
-/*
-	Repetimos 5 veces (1 por dado)
-		Turno 1 
-			Jugador 1
-				Repetimos 3 veces (como máximo)
-					Lanzamiento 1 
-						Tiramos 5 dados
-						Vemos el resultado/puntos
-						Escogemos Dados para guardar
-					Lanzamiento X 
-						...
-			Jugador X
-				...
-		Turno 2
-			...
-*/
+	}*/
 });
 
 function comenzarJuego() {
@@ -74,10 +42,10 @@ function comenzarJuego() {
 	console.log("Inicializamos variables");
 	console.log("_______________________");
 	inicializarVariables();
-	console.log("Jugadores: " + numJugadores);
-	console.log("Dados: " + numDados);
-	console.log("Caras de Dados: " + numCarasDado);
-	console.log("Tiradas: " + numTiradas);
+	console.log("Jugadores: " + numJugadoresMax);
+	console.log("Dados: " + numDadosMax);
+	console.log("Caras de Dados: " + numCarasDadoMax);
+	console.log("Tiradas: " + numTiradasMax);
 	console.log("Dados de Poker: " + ((swPoker) ? "Si" : "No"));
 
 	console.log("__________________________");
@@ -96,15 +64,18 @@ function comenzarJuego() {
 }
 
 function inicializarVariables() {
-	numJugadores = $("#numJugadores").find(":selected").val();
-	numDados = $("#numDados").find(":selected").val();
-	numCarasDado = $("#numCarasDado").find(":selected").val();
-	numTiradas = $("#numTiradas").find(":selected").val();
+	numJugadoresMax = $("#numJugadoresMax").find(":selected").val();
+	numDadosMax = $("#numDadosMax").find(":selected").val();
+	numCarasDadoMax = $("#numCarasDadoMax").find(":selected").val();
+	numTiradasMax = $("#numTiradasMax").find(":selected").val();
 	swPoker = $("#swPoker").is(":checked");
+	numTiradaJugador = 0;
+	numJugadorActual = 1;
+	numTurnoActual = 1;
 }
 
 function inicializarPuntuaciones() {
-	for (let i = 1; i <= numJugadores; i++) {
+	for (let i = 1; i <= numJugadoresMax; i++) {
 		puntFinalJugadores[i] = 0;
 		console.log("Puntuación de Jugador " + i + ": " + puntFinalJugadores[i]);
 	}
@@ -127,14 +98,19 @@ function realizarTirada() {
 	console.log("Realizamos Tirada");
 	console.log("_________________");
 
-	for (let dado = 1; dado <= numDados; dado++) {
-		let num = Math.ceil(Math.random() * numCarasDado);
-		if (swPoker) {
-			num = figurasPoker[num];
+	numTiradaJugador++;
+	if (numTiradaJugador <= numTiradasMax) {
+		for (let dado = 1; dado <= numDadosMax; dado++) {
+			let num = Math.ceil(Math.random() * numCarasDadoMax);
+			if (swPoker) {
+				num = figurasPoker[num];
+			}
+			$("#tablero").append('<input type="checkbox" id="'+dado+'_'+numTiradaJugador+'_'+numJugadorActual+'_'+numTurnoActual+'" name="'+dado+'_'+numTiradaJugador+'_'+numJugadorActual+'_'+numTurnoActual+'">');
+			$("#tablero").append('<label for="'+dado+'_'+numTiradaJugador+'_'+numJugadorActual+'_'+numTurnoActual+'">'+num+'</label>');
 		}
-		$("#tablero").append('<input type="checkbox" id="'+dado+'_'+tirada+'_'+jugador+'_'+turno+'" name="'+dado+'_'+tirada+'_'+jugador+'_'+turno+'" value="'+num+'">');
-		$("#tablero").append('<label for="'+dado+'_'+tirada+'_'+jugador+'_'+turno+'">'+num+'</label>');
+		$("#tablero").append('<br>');
 	}
+	//numJugadorActual
 }
 
 function finalizarJuego() {
