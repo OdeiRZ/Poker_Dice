@@ -106,11 +106,18 @@ function realizarTirada() {
 				num = figurasPoker[num];
 			}
 			$("#tablero").append('<input type="checkbox" id="'+dado+'_'+numTiradaJugador+'_'+numJugadorActual+'_'+numTurnoActual+'" name="'+dado+'_'+numTiradaJugador+'_'+numJugadorActual+'_'+numTurnoActual+'">');
-			$("#tablero").append('<label for="'+dado+'_'+numTiradaJugador+'_'+numJugadorActual+'_'+numTurnoActual+'">'+num+'</label>');
+			$("#tablero").append('<label for="'+dado+'_'+numTiradaJugador+'_'+numJugadorActual+'_'+numTurnoActual+'">'+num+'</label> ');
 		}
-		$("#tablero").append('<br>');
+		$("#tablero").append('<input type="button" id="btnFinTirada" value="Finalizar Tiradas" onclick="finalizarTiradas()"><br>');
 	}
 	//numJugadorActual
+}
+
+function finalizarTiradas() {
+	console.log("_________________");
+	console.log("Finalizar Tiradas");
+	console.log("_________________");
+
 }
 
 function finalizarJuego() {
