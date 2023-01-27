@@ -105,12 +105,23 @@ function realizarTirada() {
 			if (swPoker) {
 				num = figurasPoker[num];
 			}
-			$("#tablero").append('<input type="checkbox" id="'+dado+'_'+numTiradaJugador+'_'+numJugadorActual+'_'+numTurnoActual+'" name="'+dado+'_'+numTiradaJugador+'_'+numJugadorActual+'_'+numTurnoActual+'">');
+			$("#tablero").append('<input type="checkbox" id="'+dado+'_'+numTiradaJugador+'_'+numJugadorActual+'_'+numTurnoActual+'" name="'+numTiradaJugador+'_'+numJugadorActual+'_'+numTurnoActual+'" onchange="calcularPuntos(this)">');
 			$("#tablero").append('<label for="'+dado+'_'+numTiradaJugador+'_'+numJugadorActual+'_'+numTurnoActual+'">'+num+'</label> ');
 		}
 		$("#tablero").append('<input type="button" id="btnFinTirada" value="Finalizar Tiradas" onclick="finalizarTiradas()"><br>');
+		/*console.log();
+		$("input[name='bla[]']").each( function () {
+			alert( $(this).val() );
+		});*/
 	}
 	//numJugadorActual
+}
+
+function calcularPuntos(that) {
+	console.log("_______________");
+	console.log("Calcular Puntos");
+	console.log("_______________");
+	console.log(that);
 }
 
 function finalizarTiradas() {
