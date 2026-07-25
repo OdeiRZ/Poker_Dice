@@ -1,13 +1,13 @@
 
 var numJugadoresMax;
 var numJugadorActual;
-var numTurnoActual;
 var numCarasDadoMax;
 var numDadosMax;
 var numTiradasMax;
 var numTiradaJugador;
 var swPoker;
 var puntFinalJugadores = [];
+var firmasJugadores = [];
 var dadosActuales = [];
 const figurasPoker = ["", "7", "8", "J", "Q", "K", "•"];
 
@@ -25,6 +25,7 @@ function comenzarJuego() {
 	console.log("Caras de Dados: " + numCarasDadoMax);
 	console.log("Tiradas: " + numTiradasMax);
 	console.log("Dados de Poker: " + ((swPoker) ? "Si" : "No"));
+	validarConfiguracion();
 
 	console.log("__________________________");
 	console.log("Inicializamos Puntuaciones");
@@ -49,9 +50,16 @@ function inicializarVariables() {
 	swPoker = $("#swPoker").is(":checked");
 	numTiradaJugador = 0;
 	numJugadorActual = 1;
-	numTurnoActual = 1;
 	dadosActuales = [];
+	puntFinalJugadores = [];
+	firmasJugadores = [];
 	$("#resultados").html('');
+}
+
+function validarConfiguracion() {
+	if (Number(numDadosMax) > Number(numCarasDadoMax)) {
+		console.warn("Con más dados (" + numDadosMax + ") que caras (" + numCarasDadoMax + "), la Escalera nunca podrá conseguirse.");
+	}
 }
 
 function inicializarPuntuaciones() {
@@ -99,7 +107,7 @@ function pintarTablero() {
 	for (let dado = 1; dado <= numDadosMax; dado++) {
 		let dadoActual = dadosActuales[dado - 1];
 		let etiqueta = swPoker ? figurasPoker[dadoActual.valor] : dadoActual.valor;
-		let id = dado+'_'+numTiradaJugador+'_'+numJugadorActual+'_'+numTurnoActual;
+		let id = dado+'_'+numTiradaJugador+'_'+numJugadorActual;
 		let marcado = dadoActual.guardado ? ' checked' : '';
 		$("#tablero").append('<input type="checkbox" id="'+id+'" name="'+id+'" value="'+dadoActual.valor+'"'+marcado+' onchange="calcularPuntos(this)">');
 		$("#tablero").append('<label for="'+id+'">'+etiqueta+'</label>');
@@ -122,15 +130,37 @@ function evaluarMano(valores) {
 	let repeticiones = Object.values(conteos).sort((a, b) => b - a);
 	let esEscalera = Object.keys(conteos).length === valores.length &&
 		(Math.max(...valores) - Math.min(...valores)) === valores.length - 1;
+	let firma = Object.keys(conteos)
+		.map(Number)
+		.sort((a, b) => conteos[b] - conteos[a] || b - a)
+		.flatMap(v => Array(conteos[v]).fill(v));
 
-	if (repeticiones[0] === valores.length) return { nombre: "Repóker", puntos: 8 };
-	if (repeticiones[0] === 4) return { nombre: "Póker", puntos: 7 };
-	if (repeticiones[0] === 3 && repeticiones[1] === 2) return { nombre: "Full", puntos: 6 };
-	if (esEscalera) return { nombre: "Escalera", puntos: 5 };
-	if (repeticiones[0] === 3) return { nombre: "Trío", puntos: 4 };
-	if (repeticiones[0] === 2 && repeticiones[1] === 2) return { nombre: "Doble Pareja", puntos: 3 };
-	if (repeticiones[0] === 2) return { nombre: "Pareja", puntos: 2 };
-	return { nombre: "Nada", puntos: 1 };
+	let mano;
+	if (repeticiones[0] === valores.length) mano = { nombre: "Repóker", puntos: 8 };
+	else if (repeticiones[0] === 4) mano = { nombre: "Póker", puntos: 7 };
+	else if (repeticiones[0] === 3 && repeticiones[1] === 2) mano = { nombre: "Full", puntos: 6 };
+	else if (esEscalera) mano = { nombre: "Escalera", puntos: 5 };
+	else if (repeticiones[0] === 3) mano = { nombre: "Trío", puntos: 4 };
+	else if (repeticiones[0] === 2 && repeticiones[1] === 2) mano = { nombre: "Doble Pareja", puntos: 3 };
+	else if (repeticiones[0] === 2) mano = { nombre: "Pareja", puntos: 2 };
+	else mano = { nombre: "Nada", puntos: 1 };
+
+	mano.firma = firma;
+	return mano;
+}
+
+function compararManos(firmaA, firmaB) {
+	for (let i = 0; i < firmaA.length; i++) {
+		if (firmaA[i] !== firmaB[i]) return firmaA[i] - firmaB[i];
+	}
+	return 0;
+}
+
+function compararJugadores(a, b) {
+	if (puntFinalJugadores[a] !== puntFinalJugadores[b]) {
+		return puntFinalJugadores[a] - puntFinalJugadores[b];
+	}
+	return compararManos(firmasJugadores[a], firmasJugadores[b]);
 }
 
 function finalizarTiradas() {
@@ -141,6 +171,7 @@ function finalizarTiradas() {
 	let valores = dadosActuales.map(d => d.valor);
 	let mano = evaluarMano(valores);
 	puntFinalJugadores[numJugadorActual] = mano.puntos;
+	firmasJugadores[numJugadorActual] = mano.firma;
 	console.log("Valores: " + valores.join(", "));
 	console.log("Mano de Jugador " + numJugadorActual + ": " + mano.nombre + " (" + mano.puntos + " puntos)");
 	$("#resultados").append("Jugador " + numJugadorActual + ": " + mano.nombre + " (" + mano.puntos + " puntos)<br>");
@@ -157,14 +188,23 @@ function finalizarTiradas() {
 }
 
 function mostrarGanador() {
-	let ganador = 1;
+	let ganadores = [1];
 	for (let i = 2; i <= numJugadoresMax; i++) {
-		if (puntFinalJugadores[i] > puntFinalJugadores[ganador]) {
-			ganador = i;
+		let cmp = compararJugadores(i, ganadores[0]);
+		if (cmp > 0) {
+			ganadores = [i];
+		} else if (cmp === 0) {
+			ganadores.push(i);
 		}
 	}
-	console.log("Ganador: Jugador " + ganador + " con " + puntFinalJugadores[ganador] + " puntos");
-	$("#resultados").append("<br><strong>Ganador: Jugador " + ganador + " (" + puntFinalJugadores[ganador] + " puntos)</strong><br>");
+
+	if (ganadores.length > 1) {
+		console.log("Empate entre Jugadores: " + ganadores.join(", ") + " (" + puntFinalJugadores[ganadores[0]] + " puntos)");
+		$("#resultados").append("<br><strong>Empate entre Jugadores " + ganadores.join(", ") + " (" + puntFinalJugadores[ganadores[0]] + " puntos)</strong><br>");
+	} else {
+		console.log("Ganador: Jugador " + ganadores[0] + " con " + puntFinalJugadores[ganadores[0]] + " puntos");
+		$("#resultados").append("<br><strong>Ganador: Jugador " + ganadores[0] + " (" + puntFinalJugadores[ganadores[0]] + " puntos)</strong><br>");
+	}
 }
 
 function finalizarJuego() {
