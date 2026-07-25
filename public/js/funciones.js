@@ -65,6 +65,7 @@ function validarConfiguracion() {
 function inicializarPuntuaciones() {
 	for (let i = 1; i <= numJugadoresMax; i++) {
 		puntFinalJugadores[i] = 0;
+		firmasJugadores[i] = [];
 		console.log("Puntuación de Jugador " + i + ": " + puntFinalJugadores[i]);
 	}
 }
