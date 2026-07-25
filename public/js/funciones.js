@@ -111,7 +111,7 @@ function pintarTablero() {
 		let marcado = dadoActual.guardado ? ' checked' : '';
 		$("#tablero").append('<span class="dado"><input type="checkbox" id="'+id+'" name="'+id+'" value="'+dadoActual.valor+'"'+marcado+' onchange="calcularPuntos(this)"><label for="'+id+'">'+etiqueta+'</label></span>');
 	}
-	$("#tablero").append('<br><input type="button" id="btnFinTirada" value="Finalizar Tiradas" onclick="finalizarTiradas()">');
+	$("#panelBtnFinTiradas").html('<input type="button" id="btnFinTirada" value="Finalizar Tiradas" onclick="finalizarTiradas()">');
 }
 
 function calcularPuntos(that) {
@@ -238,5 +238,6 @@ function reiniciarTablero() {
 	console.log("Reiniciar Tablero");
 	console.log("_________________");
 	$("#tablero").html('');
+	$("#panelBtnFinTiradas").html('');
 	dadosActuales = [];
 }
