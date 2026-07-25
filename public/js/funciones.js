@@ -111,6 +111,14 @@ function ocultarBotones() {
 	$("#panelJuego").show();
 	$("#panelBtnTirada").show();
 	$("#panelBtnFin").show();
+	actualizarTurnoInfo();
+}
+
+function actualizarTurnoInfo() {
+	let detalle = numTiradaJugador > 0
+		? ' - Tirada ' + numTiradaJugador + '/' + numTiradasMax
+		: ' - Pulsa "Realizar Tirada" para empezar';
+	$("#turnoInfo").html('<strong class="turno-info">Jugador ' + numJugadorActual + detalle + '</strong>');
 }
 
 function realizarTirada() {
@@ -134,7 +142,7 @@ function realizarTirada() {
 }
 
 function pintarTablero() {
-	$("#turnoInfo").html('<strong class="turno-info">Jugador ' + numJugadorActual + ' - Tirada ' + numTiradaJugador + '/' + numTiradasMax + '</strong>');
+	actualizarTurnoInfo();
 	$("#tablero").html('');
 	for (let dado = 1; dado <= numDadosMax; dado++) {
 		let dadoActual = dadosActuales[dado - 1];
@@ -226,6 +234,7 @@ function finalizarTiradas() {
 		numJugadorActual++;
 		numTiradaJugador = 0;
 		console.log("Turno de Jugador " + numJugadorActual);
+		actualizarTurnoInfo();
 	} else {
 		finalizarJuego();
 	}
