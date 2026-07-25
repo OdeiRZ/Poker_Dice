@@ -46,7 +46,7 @@ body {
 }
 
 .app-header .subtitle {
-	margin: 4px 0 0;
+	margin: 4px 0 12px;
 	color: #cfe4ee;
 	font-size: 0.95rem;
 }
@@ -57,6 +57,53 @@ body {
 	box-shadow: var(--shadow-card);
 	padding: 20px 22px;
 	margin-bottom: 18px;
+}
+
+.btn-ghost {
+	padding: 6px 16px;
+	border: 1px solid rgba(255, 255, 255, 0.6);
+	border-radius: 999px;
+	background: transparent;
+	color: #ffffff;
+	font-size: 0.85rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background 0.15s ease;
+}
+
+.btn-ghost:hover {
+	background: rgba(255, 255, 255, 0.15);
+}
+
+#panelPuntuacion {
+	display: none;
+}
+
+.puntuacion-card h2 {
+	margin: 0 0 12px;
+	font-size: 1.1rem;
+	color: var(--color-primary-dark);
+}
+
+.puntuacion-card .escala-fila {
+	padding: 6px 4px;
+	border-bottom: 1px solid var(--color-border);
+}
+
+.puntuacion-card .escala-fila:last-child {
+	border-bottom: none;
+}
+
+.escala-fila {
+	opacity: 1;
+}
+
+.escala-fila.escala-no-disponible {
+	opacity: 0.45;
+}
+
+.escala-fila.escala-no-disponible .mano-detalle {
+	font-style: italic;
 }
 
 /* Panel de configuración */
@@ -238,26 +285,41 @@ input[type="button"]:active {
 
 .resultado-jugador {
 	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 10px;
+	flex-direction: column;
+	gap: 5px;
 	padding: 8px 10px;
 	border-radius: 8px;
 	background: #f5f7f8;
+}
+
+.resultado-fila {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
 }
 
 .resultado-jugador .jugador-nombre {
 	font-weight: 600;
 }
 
-.resultado-jugador .mano-badge {
+.mano-badge {
+	flex-shrink: 0;
 	padding: 3px 10px;
 	border-radius: 999px;
 	font-size: 0.85rem;
 	font-weight: 700;
 }
 
-.resultado-jugador .puntos {
+.mano-detalle {
+	flex: 1;
+	font-size: 0.8rem;
+	color: var(--color-muted);
+	letter-spacing: 0.3px;
+}
+
+.puntos {
+	flex-shrink: 0;
 	font-size: 0.85rem;
 	color: var(--color-muted);
 	min-width: 44px;

@@ -62,6 +62,41 @@ function validarConfiguracion() {
 	}
 }
 
+function obtenerEscalaPuntuacion() {
+	let dados = Number($("#numDadosMax").find(":selected").val());
+	let caras = Number($("#numCarasDadoMax").find(":selected").val());
+	return [
+		{ puntos: 8, nombre: "Repóker", descripcion: "Todos los dados iguales", disponible: true },
+		{ puntos: 7, nombre: "Póker", descripcion: "Cuatro dados iguales", disponible: dados >= 5 },
+		{ puntos: 6, nombre: "Full", descripcion: "Trío + pareja", disponible: dados >= 5 },
+		{ puntos: 5, nombre: "Escalera", descripcion: "Todos los valores consecutivos y distintos", disponible: dados <= caras },
+		{ puntos: 4, nombre: "Trío", descripcion: "Tres dados iguales", disponible: dados >= 4 },
+		{ puntos: 3, nombre: "Doble Pareja", descripcion: "Dos parejas distintas", disponible: dados >= 4 },
+		{ puntos: 2, nombre: "Pareja", descripcion: "Dos dados iguales", disponible: dados >= 3 },
+		{ puntos: 1, nombre: "Nada", descripcion: "Sin combinación", disponible: true }
+	];
+}
+
+function mostrarEscalaPuntuacion() {
+	let panel = $("#panelPuntuacion");
+	if (panel.is(":visible")) {
+		panel.hide();
+		return;
+	}
+
+	let filas = obtenerEscalaPuntuacion().map(function(mano) {
+		let claseDisponible = mano.disponible ? "" : " escala-no-disponible";
+		let detalle = mano.descripcion + (mano.disponible ? "" : " — no disponible con esta configuración");
+		return '<div class="resultado-fila escala-fila' + claseDisponible + '">' +
+				'<span class="mano-badge mano-' + mano.puntos + '">' + mano.nombre + '</span>' +
+				'<span class="mano-detalle">' + detalle + '</span>' +
+				'<span class="puntos">' + mano.puntos + ' pts</span>' +
+			'</div>';
+	}).join('');
+
+	panel.html('<h2>Ranking de manos</h2>' + filas).show();
+}
+
 function inicializarPuntuaciones() {
 	for (let i = 1; i <= numJugadoresMax; i++) {
 		puntFinalJugadores[i] = 0;
@@ -171,11 +206,17 @@ function finalizarTiradas() {
 	firmasJugadores[numJugadorActual] = mano.firma;
 	console.log("Valores: " + valores.join(", "));
 	console.log("Mano de Jugador " + numJugadorActual + ": " + mano.nombre + " (" + mano.puntos + " puntos)");
+	let etiquetasFirma = mano.firma.map(v => swPoker ? figurasPoker[v] : v).join(", ");
 	$("#resultados").append(
 		'<div class="resultado-jugador">' +
-			'<span class="jugador-nombre">Jugador ' + numJugadorActual + '</span>' +
-			'<span class="mano-badge mano-' + mano.puntos + '">' + mano.nombre + '</span>' +
-			'<span class="puntos">' + mano.puntos + ' pts</span>' +
+			'<div class="resultado-fila">' +
+				'<span class="jugador-nombre">Jugador ' + numJugadorActual + '</span>' +
+				'<span class="puntos">' + mano.puntos + ' pts</span>' +
+			'</div>' +
+			'<div class="resultado-fila">' +
+				'<span class="mano-badge mano-' + mano.puntos + '">' + mano.nombre + '</span>' +
+				'<span class="mano-detalle">' + etiquetasFirma + '</span>' +
+			'</div>' +
 		'</div>'
 	);
 
