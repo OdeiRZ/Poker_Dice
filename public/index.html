@@ -2,8 +2,8 @@
 <html lang="es">
 	<head>
 		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
-		<meta name="viewport" content="width=device-width, initial-scale=1"> 
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Poker Dice</title>
 		<meta property="og:title" content="Poker Dice">
 		<!--<meta name="description" content="" />
@@ -17,57 +17,73 @@
 		<script type="text/javascript" src="js/funciones.js"></script>
 	</head>
 	<body>
-		<span id="panelJugadores">
-			<label for="numJugadoresMax">Jugadores:</label>
-			<select name="numJugadoresMax" id="numJugadoresMax">
-				<option value="1" selected>1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-			</select>
-		</span>
-		<span id="panelDados">
-			<label for="numDadosMax">Número de Dados:</label>
-			<select name="numDadosMax" id="numDadosMax">
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5" selected>5</option>
-				<option value="6">6</option>
-			</select>
-		</span>
-		<span id="panelCarasDado">
-			<label for="numCarasDadoMax">Número de Caras:</label>
-			<select name="numCarasDadoMax" id="numCarasDadoMax">
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-				<option value="6" selected>6</option>
-			</select>
-		</span>
-		<span id="panelTiradas">
-			<label for="numTiradasMax">Número de Tiradas:</label>
-			<select name="numTiradasMax" id="numTiradasMax">
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3" selected>3</option>
-			</select>
-		</span>
-		<span id="panelSwPoker">
-			<label for="swPoker">Dados de Poker:</label>
-			<input type="checkbox" id="swPoker" checked>
-		</span>
-		<span id="panelBtnInicio">
-			<input type="button" id="btnInicio" value="Comenzar Juego" onclick="comenzarJuego()">
-		</span>
-		<span id="panelBtnTirada">
-			<input type="button" id="btnTirada" value="Realizar Tirada" onclick="realizarTirada()">
-		</span>
-		<span id="panelBtnFinTiradas"></span>
-		<div id="tablero"></div>
-		<span id="panelBtnFin">
-			<input type="button" id="btnFin" value="Finalizar Juego" onclick="finalizarJuego()">
-		</span>
-		<div id="resultados"></div>
+		<div class="app">
+			<header class="app-header">
+				<h1>🎲 Poker Dice</h1>
+				<p class="subtitle">El clásico juego de dados de póker</p>
+			</header>
+
+			<section class="card config-card" id="panelConfiguracion">
+				<div class="config-row" id="panelJugadores">
+					<label for="numJugadoresMax">Jugadores</label>
+					<select name="numJugadoresMax" id="numJugadoresMax">
+						<option value="1" selected>1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+					</select>
+				</div>
+				<div class="config-row" id="panelDados">
+					<label for="numDadosMax">Número de Dados</label>
+					<select name="numDadosMax" id="numDadosMax">
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5" selected>5</option>
+						<option value="6">6</option>
+					</select>
+				</div>
+				<div class="config-row" id="panelCarasDado">
+					<label for="numCarasDadoMax">Número de Caras</label>
+					<select name="numCarasDadoMax" id="numCarasDadoMax">
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6" selected>6</option>
+					</select>
+				</div>
+				<div class="config-row" id="panelTiradas">
+					<label for="numTiradasMax">Número de Tiradas</label>
+					<select name="numTiradasMax" id="numTiradasMax">
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3" selected>3</option>
+					</select>
+				</div>
+				<div class="config-row config-row-checkbox" id="panelSwPoker">
+					<label for="swPoker">Dados de Poker</label>
+					<input type="checkbox" id="swPoker" checked>
+				</div>
+				<div class="config-actions" id="panelBtnInicio">
+					<input type="button" id="btnInicio" value="Comenzar Juego" onclick="comenzarJuego()">
+				</div>
+			</section>
+
+			<section class="card game-card" id="panelJuego">
+				<div class="game-actions">
+					<span id="panelBtnTirada">
+						<input type="button" id="btnTirada" value="Realizar Tirada" onclick="realizarTirada()">
+					</span>
+					<span id="panelBtnFinTiradas"></span>
+				</div>
+				<div id="turnoInfo"></div>
+				<div id="tablero" class="tablero"></div>
+				<div class="game-actions" id="panelBtnFin">
+					<input type="button" id="btnFin" value="Finalizar Juego" onclick="finalizarJuego()">
+				</div>
+			</section>
+
+			<section id="resultados" class="card resultados"></section>
+		</div>
 	</body>
 </html>

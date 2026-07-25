@@ -1,28 +1,177 @@
+:root {
+	--color-bg-start: #123b53;
+	--color-bg-end: #1d5b73;
+	--color-card: #ffffff;
+	--color-text: #263238;
+	--color-muted: #607d8b;
+	--color-primary: #1d6f8c;
+	--color-primary-dark: #145062;
+	--color-accent: #f5a623;
+	--color-accent-dark: #c9820e;
+	--color-danger: #b0413e;
+	--color-danger-dark: #8c332f;
+	--color-success: #2e7d32;
+	--color-border: #e0e6e9;
+	--shadow-card: 0 8px 24px rgba(10, 40, 55, 0.25);
+}
+
+* {
+	box-sizing: border-box;
+}
 
 body {
-	font-family: Arial, Helvetica, sans-serif;
+	margin: 0;
+	min-height: 100vh;
+	font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	color: var(--color-text);
+	background: linear-gradient(135deg, var(--color-bg-start), var(--color-bg-end));
+	padding: 24px 16px 48px;
 }
 
-#panelBtnFin, #panelBtnTirada {
-	display: none;
+.app {
+	max-width: 560px;
+	margin: 0 auto;
 }
+
+.app-header {
+	text-align: center;
+	color: #ffffff;
+	margin-bottom: 20px;
+}
+
+.app-header h1 {
+	margin: 0;
+	font-size: 2.1rem;
+	letter-spacing: 0.5px;
+}
+
+.app-header .subtitle {
+	margin: 4px 0 0;
+	color: #cfe4ee;
+	font-size: 0.95rem;
+}
+
+.card {
+	background: var(--color-card);
+	border-radius: 14px;
+	box-shadow: var(--shadow-card);
+	padding: 20px 22px;
+	margin-bottom: 18px;
+}
+
+/* Panel de configuración */
+
+.config-card {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.config-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+}
+
+.config-row label {
+	font-weight: 600;
+	color: var(--color-text);
+}
+
+.config-row select {
+	padding: 6px 10px;
+	border: 1px solid var(--color-border);
+	border-radius: 6px;
+	background: #fafcfd;
+	font-size: 0.95rem;
+	min-width: 80px;
+}
+
+.config-row-checkbox input[type="checkbox"] {
+	width: 20px;
+	height: 20px;
+	accent-color: var(--color-primary);
+}
+
+.config-actions,
+.game-actions {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+	margin-top: 4px;
+}
+
+/* Botones */
 
 input[type="button"] {
-	padding: 6px 14px;
-	margin: 4px 4px 4px 0;
-	border: 1px solid #888;
-	border-radius: 4px;
-	background: #f0f0f0;
+	padding: 10px 20px;
+	margin: 4px 0;
+	border: none;
+	border-radius: 8px;
+	background: var(--color-primary);
+	color: #ffffff;
+	font-size: 0.95rem;
+	font-weight: 600;
 	cursor: pointer;
+	transition: background 0.15s ease, transform 0.1s ease;
 }
 
 input[type="button"]:hover {
-	background: #e0e0e0;
+	background: var(--color-primary-dark);
+}
+
+input[type="button"]:active {
+	transform: scale(0.97);
+}
+
+#panelBtnFin,
+#panelBtnTirada,
+#panelJuego {
+	display: none;
+}
+
+#panelBtnFin input[type="button"] {
+	background: var(--color-danger);
+}
+
+#panelBtnFin input[type="button"]:hover {
+	background: var(--color-danger-dark);
+}
+
+#panelBtnFinTiradas input[type="button"] {
+	background: var(--color-accent);
+	color: #3b2a06;
+}
+
+#panelBtnFinTiradas input[type="button"]:hover {
+	background: var(--color-accent-dark);
+	color: #ffffff;
+}
+
+/* Tablero de juego */
+
+.game-card {
+	text-align: center;
 }
 
 .turno-info {
 	display: inline-block;
-	margin: 8px 0 4px;
+	margin: 4px 0 14px;
+	padding: 5px 14px;
+	border-radius: 999px;
+	background: #eaf3f6;
+	color: var(--color-primary-dark);
+	font-size: 0.9rem;
+	font-weight: 700;
+}
+
+.tablero {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 6px;
+	min-height: 1px;
 }
 
 .dado {
@@ -40,37 +189,116 @@ input[type="button"]:hover {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 48px;
-	height: 48px;
+	width: 56px;
+	height: 56px;
 	margin: 4px;
-	border: 2px solid #333;
-	border-radius: 8px;
-	background: #fff;
-	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-	font-size: 1.4rem;
+	border: 2px solid #cfd8dc;
+	border-radius: 12px;
+	background: linear-gradient(160deg, #ffffff, #eef2f4);
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+	font-size: 1.6rem;
 	font-weight: bold;
+	color: var(--color-text);
 	cursor: pointer;
 	user-select: none;
+	transition: transform 0.1s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.dado label:hover {
+	transform: translateY(-2px);
 }
 
 .dado input[type="checkbox"]:checked + label {
-	background: #ffd54f;
-	border-color: #f57f17;
+	background: linear-gradient(160deg, #ffd873, var(--color-accent));
+	border-color: var(--color-accent-dark);
+	color: #4a2f00;
+	box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25);
+	transform: translateY(1px);
 }
 
 .dado input[type="checkbox"]:focus-visible + label {
-	outline: 2px solid #1976d2;
+	outline: 2px solid var(--color-primary);
+	outline-offset: 2px;
 }
 
-#resultados {
-	margin-top: 16px;
-	padding: 8px 14px;
-	max-width: 320px;
-	border: 1px solid #ccc;
-	border-radius: 6px;
-	background: #fafafa;
+/* Resultados */
+
+.resultados {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
 }
 
-#resultados:empty {
+.resultados:empty {
 	display: none;
+	padding: 0;
+	margin: 0;
+	box-shadow: none;
+}
+
+.resultado-jugador {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	padding: 8px 10px;
+	border-radius: 8px;
+	background: #f5f7f8;
+}
+
+.resultado-jugador .jugador-nombre {
+	font-weight: 600;
+}
+
+.resultado-jugador .mano-badge {
+	padding: 3px 10px;
+	border-radius: 999px;
+	font-size: 0.85rem;
+	font-weight: 700;
+}
+
+.resultado-jugador .puntos {
+	font-size: 0.85rem;
+	color: var(--color-muted);
+	min-width: 44px;
+	text-align: right;
+}
+
+.mano-1 { background: #eceff1; color: #546e7a; }
+.mano-2 { background: #dcedc8; color: #33691e; }
+.mano-3 { background: #c8e6c9; color: #1b5e20; }
+.mano-4 { background: #b3e5fc; color: #01579b; }
+.mano-5 { background: #90caf9; color: #0d47a1; }
+.mano-6 { background: #ce93d8; color: #4a148c; }
+.mano-7 { background: #ffe082; color: #7a4f01; }
+.mano-8 { background: #ffab00; color: #4a2f00; }
+
+.veredicto {
+	text-align: center;
+	padding: 12px;
+	border-radius: 10px;
+	font-weight: 700;
+	font-size: 1.05rem;
+}
+
+.veredicto-ganador {
+	background: #e0f2e9;
+	color: var(--color-success);
+}
+
+.veredicto-empate {
+	background: #fdecea;
+	color: var(--color-danger-dark);
+}
+
+@media (max-width: 480px) {
+	.card {
+		padding: 16px;
+	}
+
+	.dado label {
+		width: 48px;
+		height: 48px;
+		font-size: 1.3rem;
+	}
 }

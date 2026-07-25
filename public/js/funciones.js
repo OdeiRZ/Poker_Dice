@@ -72,12 +72,8 @@ function inicializarPuntuaciones() {
 
 function ocultarBotones() {
 	console.log("Botones Ocultados");
-	$("#panelJugadores").hide();
-	$("#panelDados").hide();
-	$("#panelCarasDado").hide();
-	$("#panelTiradas").hide();
-	$("#panelSwPoker").hide();
-	$("#panelBtnInicio").hide();
+	$("#panelConfiguracion").hide();
+	$("#panelJuego").show();
 	$("#panelBtnTirada").show();
 	$("#panelBtnFin").show();
 }
@@ -103,14 +99,15 @@ function realizarTirada() {
 }
 
 function pintarTablero() {
+	$("#turnoInfo").html('<strong class="turno-info">Jugador ' + numJugadorActual + ' - Tirada ' + numTiradaJugador + '/' + numTiradasMax + '</strong>');
 	$("#tablero").html('');
-	$("#tablero").append('<strong class="turno-info">Jugador ' + numJugadorActual + ' - Tirada ' + numTiradaJugador + '/' + numTiradasMax + '</strong><br>');
 	for (let dado = 1; dado <= numDadosMax; dado++) {
 		let dadoActual = dadosActuales[dado - 1];
 		let etiqueta = swPoker ? figurasPoker[dadoActual.valor] : dadoActual.valor;
 		let id = dado+'_'+numTiradaJugador+'_'+numJugadorActual;
 		let marcado = dadoActual.guardado ? ' checked' : '';
-		$("#tablero").append('<span class="dado"><input type="checkbox" id="'+id+'" name="'+id+'" value="'+dadoActual.valor+'"'+marcado+' onchange="calcularPuntos(this)"><label for="'+id+'">'+etiqueta+'</label></span>');
+		let titulo = dadoActual.guardado ? 'Haz clic para relanzar este dado' : 'Haz clic para guardar este dado';
+		$("#tablero").append('<span class="dado" title="'+titulo+'"><input type="checkbox" id="'+id+'" name="'+id+'" value="'+dadoActual.valor+'"'+marcado+' onchange="calcularPuntos(this)"><label for="'+id+'">'+etiqueta+'</label></span>');
 	}
 	$("#panelBtnFinTiradas").html('<input type="button" id="btnFinTirada" value="Finalizar Tiradas" onclick="finalizarTiradas()">');
 }
@@ -174,7 +171,13 @@ function finalizarTiradas() {
 	firmasJugadores[numJugadorActual] = mano.firma;
 	console.log("Valores: " + valores.join(", "));
 	console.log("Mano de Jugador " + numJugadorActual + ": " + mano.nombre + " (" + mano.puntos + " puntos)");
-	$("#resultados").append("Jugador " + numJugadorActual + ": " + mano.nombre + " (" + mano.puntos + " puntos)<br>");
+	$("#resultados").append(
+		'<div class="resultado-jugador">' +
+			'<span class="jugador-nombre">Jugador ' + numJugadorActual + '</span>' +
+			'<span class="mano-badge mano-' + mano.puntos + '">' + mano.nombre + '</span>' +
+			'<span class="puntos">' + mano.puntos + ' pts</span>' +
+		'</div>'
+	);
 
 	reiniciarTablero();
 
@@ -200,10 +203,14 @@ function mostrarGanador() {
 
 	if (ganadores.length > 1) {
 		console.log("Empate entre Jugadores: " + ganadores.join(", ") + " (" + puntFinalJugadores[ganadores[0]] + " puntos)");
-		$("#resultados").append("<br><strong>Empate entre Jugadores " + ganadores.join(", ") + " (" + puntFinalJugadores[ganadores[0]] + " puntos)</strong><br>");
+		$("#resultados").append(
+			'<div class="veredicto veredicto-empate">🤝 Empate entre Jugadores ' + ganadores.join(", ") + ' (' + puntFinalJugadores[ganadores[0]] + ' puntos)</div>'
+		);
 	} else {
 		console.log("Ganador: Jugador " + ganadores[0] + " con " + puntFinalJugadores[ganadores[0]] + " puntos");
-		$("#resultados").append("<br><strong>Ganador: Jugador " + ganadores[0] + " (" + puntFinalJugadores[ganadores[0]] + " puntos)</strong><br>");
+		$("#resultados").append(
+			'<div class="veredicto veredicto-ganador">🏆 Ganador: Jugador ' + ganadores[0] + ' (' + puntFinalJugadores[ganadores[0]] + ' puntos)</div>'
+		);
 	}
 }
 
@@ -225,13 +232,9 @@ function reiniciarBotones() {
 	console.log("_________________");
 	$("#panelBtnTirada").hide();
 	$("#panelBtnFin").hide();
-	$("#panelJugadores").show();
-	$("#panelDados").show();
-	$("#panelCarasDado").show();
-	$("#panelTiradas").show();
-	$("#panelSwPoker").show();
-	$("#panelBtnInicio").show();
-	console.log("Botones Reiniciados"); 
+	$("#panelJuego").hide();
+	$("#panelConfiguracion").show();
+	console.log("Botones Reiniciados");
 }
 
 function reiniciarTablero() {
@@ -239,6 +242,7 @@ function reiniciarTablero() {
 	console.log("Reiniciar Tablero");
 	console.log("_________________");
 	$("#tablero").html('');
+	$("#turnoInfo").html('');
 	$("#panelBtnFinTiradas").html('');
 	dadosActuales = [];
 }
