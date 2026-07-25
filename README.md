@@ -4,10 +4,10 @@ Juego de dados de póker (Poker Dice) jugable en el navegador, desarrollado con 
 
 ## Cómo jugar
 
-1. Configura la partida: número de jugadores (1-4), número de dados (3-6), número de caras por dado (2-6), número de tiradas por turno (1-3) y si se usan símbolos de dados de póker (7, 8, J, Q, K, As) en vez de números.
-2. Cada jugador, en su turno, tira los dados y puede **guardar** los que le interesen haciendo clic sobre ellos (mecánica *hold and reroll*, como en el Yahtzee): los dados guardados no se vuelven a lanzar en las siguientes tiradas del mismo turno.
+1. Configura la partida: número de jugadores (1-4), número de dados (3-6), número de caras por dado (2-6), número de tiradas por turno (1-3) y si se usan símbolos de dados de póker (7, 8, J, Q, K, As) en vez de números. El botón **Ver puntuación** de la cabecera muestra en cualquier momento el ranking de manos, marcando en gris las que son imposibles de conseguir con la configuración elegida (por ejemplo, la Escalera si hay más dados que caras).
+2. Cada jugador, en su turno, tira los dados y puede **guardar** los que le interesen haciendo clic sobre ellos (mecánica *hold and reroll*, como en el Yahtzee): los dados guardados se resaltan y no se vuelven a lanzar en las siguientes tiradas del mismo turno.
 3. Al terminar sus tiradas (o al agotar el máximo configurado), el jugador pulsa **Finalizar Tiradas**: se evalúa su mano y el turno pasa al siguiente jugador.
-4. Cuando todos los jugadores han jugado su turno, se anuncia el ganador (o el empate) según la mejor mano conseguida.
+4. Cuando todos los jugadores han jugado su turno, se muestra el resultado de cada uno (mano, dados que la componen y puntos) y se anuncia el ganador o el empate según la mejor mano conseguida.
 5. En cualquier momento se puede pulsar **Finalizar Juego** para abortar la partida y volver a la configuración inicial.
 
 ## Ranking de manos
@@ -25,7 +25,7 @@ De mayor a menor puntuación:
 | 2 | Pareja | Dos dados iguales |
 | 1 | Nada | Sin combinación |
 
-Cuando dos jugadores obtienen la misma categoría de mano (por ejemplo, ambos "Pareja"), el desempate se resuelve comparando los valores reales de los dados (primero el grupo que define la mano, luego el resto de dados como *kickers*), igual que en el póker de cartas. Si todos los valores coinciden, se declara empate.
+Cuando dos jugadores obtienen la misma categoría de mano (por ejemplo, ambos "Full"), el desempate se resuelve comparando los valores reales de los dados (primero el grupo que define la mano, luego el resto de dados como *kickers*), igual que en el póker de cartas — así, un "Full" de trío alto vence a un "Full" de trío bajo aunque ambos puntúen igual. Si todos los valores coinciden, se declara empate. Para que quede claro por qué gana uno sobre otro, el resultado de cada jugador muestra tanto la categoría como los dados concretos que la componen.
 
 ## Lógica implementada
 
@@ -33,8 +33,12 @@ Cuando dos jugadores obtienen la misma categoría de mano (por ejemplo, ambos "P
 - **Evaluación de manos genérica**: la función que detecta la mano funciona para cualquier combinación de número de dados y caras configurada, no solo para la partida clásica de 5 dados y 6 caras.
 - **Rotación de turnos**: al finalizar sus tiradas, el turno pasa automáticamente al siguiente jugador hasta que todos han jugado.
 - **Desempate real por valores** y detección de empates genuinos entre dos o más jugadores.
-- **Validación de configuración**: si se eligen más dados que caras, se avisa (por consola) de que la Escalera será imposible de conseguir.
+- **Validación de configuración**: si se eligen más dados que caras, se avisa (por consola) de que la Escalera será imposible de conseguir; el panel "Ver puntuación" refleja esto mismo (y otras combinaciones imposibles) de forma visual.
 - Resultados de cada jugador y el ganador final se muestran en pantalla, no solo por consola.
+
+## Interfaz
+
+La interfaz está organizada en tarjetas sobre un fondo degradado: panel de configuración, panel de la partida en curso (turno actual, dados, botones) y panel de resultados, cada uno visible solo cuando corresponde. Los dados se muestran como casillas que se resaltan al guardarlas, y cada mano final se identifica con una insignia de color según su categoría (de gris para "Nada" a dorado para "Repóker").
 
 ## Requisitos
 
