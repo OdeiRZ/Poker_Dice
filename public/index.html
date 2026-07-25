@@ -36,37 +36,42 @@
 						<option value="4">4</option>
 					</select>
 				</div>
-				<div class="config-row" id="panelDados">
-					<label for="numDadosMax">Número de Dados</label>
-					<select name="numDadosMax" id="numDadosMax">
-						<option value="3">3</option>
-						<option value="4">4</option>
-						<option value="5" selected>5</option>
-						<option value="6">6</option>
-					</select>
-				</div>
-				<div class="config-row" id="panelCarasDado">
-					<label for="numCarasDadoMax">Número de Caras</label>
-					<select name="numCarasDadoMax" id="numCarasDadoMax">
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="4">4</option>
-						<option value="5">5</option>
-						<option value="6" selected>6</option>
-					</select>
-				</div>
-				<div class="config-row" id="panelTiradas">
-					<label for="numTiradasMax">Número de Tiradas</label>
-					<select name="numTiradasMax" id="numTiradasMax">
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3" selected>3</option>
-					</select>
-				</div>
 				<div class="config-row config-row-checkbox" id="panelSwPoker">
 					<label for="swPoker">Dados de Poker</label>
 					<input type="checkbox" id="swPoker" checked>
 				</div>
+				<details class="opciones-avanzadas">
+					<summary>Opciones avanzadas</summary>
+					<div class="opciones-avanzadas-body">
+						<div class="config-row" id="panelDados">
+							<label for="numDadosMax">Número de Dados</label>
+							<select name="numDadosMax" id="numDadosMax">
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5" selected>5</option>
+								<option value="6">6</option>
+							</select>
+						</div>
+						<div class="config-row" id="panelCarasDado">
+							<label for="numCarasDadoMax">Número de Caras</label>
+							<select name="numCarasDadoMax" id="numCarasDadoMax">
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6" selected>6</option>
+							</select>
+						</div>
+						<div class="config-row" id="panelTiradas">
+							<label for="numTiradasMax">Número de Tiradas</label>
+							<select name="numTiradasMax" id="numTiradasMax">
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3" selected>3</option>
+							</select>
+						</div>
+					</div>
+				</details>
 				<div class="config-actions" id="panelBtnInicio">
 					<input type="button" id="btnInicio" value="Comenzar Juego" onclick="comenzarJuego()">
 				</div>

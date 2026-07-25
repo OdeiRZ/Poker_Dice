@@ -141,6 +141,40 @@ body {
 	accent-color: var(--color-primary);
 }
 
+.opciones-avanzadas {
+	border-top: 1px solid var(--color-border);
+	padding-top: 10px;
+}
+
+.opciones-avanzadas summary {
+	cursor: pointer;
+	font-weight: 600;
+	color: var(--color-primary-dark);
+	list-style: none;
+}
+
+.opciones-avanzadas summary::-webkit-details-marker {
+	display: none;
+}
+
+.opciones-avanzadas summary::before {
+	content: "▸";
+	display: inline-block;
+	margin-right: 6px;
+	transition: transform 0.15s ease;
+}
+
+.opciones-avanzadas[open] summary::before {
+	transform: rotate(90deg);
+}
+
+.opciones-avanzadas-body {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	margin-top: 12px;
+}
+
 .config-actions,
 .game-actions {
 	display: flex;
