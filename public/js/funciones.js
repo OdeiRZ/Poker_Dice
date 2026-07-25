@@ -103,9 +103,21 @@ function actualizarTurnoInfo() {
 	$("#turnoInfo").html('<strong class="turno-info">Jugador ' + numJugadorActual + detalle + '</strong>');
 }
 
+function mostrarAviso(mensaje) {
+	$("#avisoJuego").html(mensaje);
+}
+
+function limpiarAviso() {
+	$("#avisoJuego").html('');
+}
+
 function realizarTirada() {
+	limpiarAviso();
+
 	if (numTiradaJugador >= numTiradasMax) {
 		console.log("Realizar Tirada: no quedan tiradas disponibles para el Jugador " + numJugadorActual);
+		let textoTiradas = numTiradasMax === 1 ? 'tu única tirada' : 'tus ' + numTiradasMax + ' tiradas';
+		mostrarAviso('⚠️ Ya has usado ' + textoTiradas + '. Pulsa "Finalizar Tiradas" para continuar.');
 		return;
 	}
 	numTiradaJugador++;
@@ -260,5 +272,6 @@ function reiniciarTablero() {
 	$("#tablero").html('');
 	$("#turnoInfo").html('');
 	$("#panelBtnFinTiradas").html('');
+	limpiarAviso();
 	dadosActuales = [];
 }

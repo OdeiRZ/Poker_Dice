@@ -183,6 +183,25 @@ body {
 	margin-top: 4px;
 }
 
+#panelBtnFinTiradas:empty {
+	display: none;
+}
+
+#avisoJuego:empty {
+	display: none;
+}
+
+#avisoJuego {
+	margin: 8px 0 0;
+	padding: 8px 14px;
+	border-radius: 8px;
+	background: #fdecea;
+	color: var(--color-danger-dark);
+	font-size: 0.9rem;
+	font-weight: 600;
+	text-align: center;
+}
+
 /* Botones */
 
 input[type="button"] {
