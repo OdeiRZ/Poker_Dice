@@ -48,6 +48,8 @@ function validarConfiguracion() {
 function obtenerEscalaPuntuacion() {
 	let dados = Number($("#numDadosMax").find(":selected").val());
 	let caras = Number($("#numCarasDadoMax").find(":selected").val());
+	// "disponible" exige el minimo de dados en que la mano es distinguible de una categoria superior
+	// (p.ej. con 4 dados un trio de 3 iguales + 1 kicker no cabe: los 4 iguales ya serian Repoker)
 	return [
 		{ puntos: 8, nombre: "Repóker", descripcion: "Todos los dados iguales", disponible: true },
 		{ puntos: 7, nombre: "Póker", descripcion: "Cuatro dados iguales", disponible: dados >= 5 },
@@ -83,7 +85,7 @@ function mostrarEscalaPuntuacion() {
 function inicializarPuntuaciones() {
 	for (let i = 1; i <= numJugadoresMax; i++) {
 		puntFinalJugadores[i] = 0;
-		firmasJugadores[i] = [];
+		firmasJugadores[i] = []; // sin esto, comparar a dos jugadores que aun no han jugado (ambos a 0 puntos) rompe compararManos
 	}
 	console.log("Puntuaciones inicializadas para " + numJugadoresMax + " jugador(es)");
 }
@@ -122,6 +124,7 @@ function realizarTirada() {
 	}
 	numTiradaJugador++;
 
+	// solo se relanzan los dados no guardados de la tirada anterior (hold and reroll)
 	for (let dado = 1; dado <= numDadosMax; dado++) {
 		if (!dadosActuales[dado - 1] || !dadosActuales[dado - 1].guardado) {
 			dadosActuales[dado - 1] = { valor: Math.ceil(Math.random() * numCarasDadoMax), guardado: false };
@@ -138,7 +141,7 @@ function pintarTablero() {
 	for (let dado = 1; dado <= numDadosMax; dado++) {
 		let dadoActual = dadosActuales[dado - 1];
 		let etiqueta = swPoker ? figurasPoker[dadoActual.valor] : dadoActual.valor;
-		let id = dado+'_'+numTiradaJugador+'_'+numJugadorActual;
+		let id = dado+'_'+numTiradaJugador+'_'+numJugadorActual; // alternarGuardado obtiene el indice del dado del primer segmento del id
 		let marcado = dadoActual.guardado ? ' checked' : '';
 		let titulo = dadoActual.guardado ? 'Haz clic para relanzar este dado' : 'Haz clic para guardar este dado';
 		$("#tablero").append('<span class="dado" title="'+titulo+'"><input type="checkbox" id="'+id+'" name="'+id+'" value="'+dadoActual.valor+'"'+marcado+' onchange="alternarGuardado(this)"><label for="'+id+'">'+etiqueta+'</label></span>');
@@ -158,6 +161,8 @@ function evaluarMano(valores) {
 	let repeticiones = Object.values(conteos).sort((a, b) => b - a);
 	let esEscalera = Object.keys(conteos).length === valores.length &&
 		(Math.max(...valores) - Math.min(...valores)) === valores.length - 1;
+	// firma: valores ordenados por repeticion (el grupo que define la mano primero) y luego por valor descendente,
+	// para poder comparar dos manos de la misma categoria como en el poker (trio/pareja mas alto, despues los kickers)
 	let firma = Object.keys(conteos)
 		.map(Number)
 		.sort((a, b) => conteos[b] - conteos[a] || b - a)
@@ -178,6 +183,7 @@ function evaluarMano(valores) {
 }
 
 function compararManos(firmaA, firmaB) {
+	// comparacion lexicografica: la primera posicion en que difieren decide (misma logica que un desempate por kicker)
 	for (let i = 0; i < firmaA.length; i++) {
 		if (firmaA[i] !== firmaB[i]) return firmaA[i] - firmaB[i];
 	}

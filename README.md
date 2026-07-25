@@ -6,7 +6,7 @@ Juego de dados de póker (Poker Dice) jugable en el navegador, desarrollado con 
 
 1. Configura la partida: número de jugadores (1-4) y si se usan símbolos de dados de póker (7, 8, J, Q, K, As) en vez de números. El número de dados (3-6), de caras por dado (2-6) y de tiradas por turno (1-3) están agrupados en **Opciones avanzadas**, plegado por defecto con los valores de la partida clásica (5 dados, 6 caras, 3 tiradas). El botón **Ver puntuación** de la cabecera muestra en cualquier momento el ranking de manos, marcando en gris las que son imposibles de conseguir con la configuración elegida (por ejemplo, la Escalera si hay más dados que caras).
 2. Cada jugador, en su turno, tira los dados y puede **guardar** los que le interesen haciendo clic sobre ellos (mecánica *hold and reroll*, como en el Yahtzee): los dados guardados se resaltan y no se vuelven a lanzar en las siguientes tiradas del mismo turno.
-3. Al terminar sus tiradas (o al agotar el máximo configurado), el jugador pulsa **Finalizar Tiradas**: se evalúa su mano y el turno pasa al siguiente jugador.
+3. Al terminar sus tiradas (o al agotar el máximo configurado, momento en el que aparece un aviso indicándolo), el jugador pulsa **Finalizar Tiradas**: se evalúa su mano y el turno pasa al siguiente jugador.
 4. Cuando todos los jugadores han jugado su turno, se muestra el resultado de cada uno (mano, dados que la componen y puntos) y se anuncia el ganador o el empate según la mejor mano conseguida.
 5. En cualquier momento se puede pulsar **Finalizar Juego** para abortar la partida y volver a la configuración inicial.
 
@@ -79,6 +79,9 @@ Todo el estado de la partida vive en variables globales de `funciones.js` (sin f
 | `finalizarTiradas` | Cierra el turno del jugador actual y pasa al siguiente (o termina la partida) |
 | `mostrarGanador` | Calcula y muestra el ganador o el empate final |
 | `mostrarPantallaJuego` / `mostrarPantallaConfiguracion` | Alternan entre la pantalla de configuración y la de partida |
+| `mostrarAviso` / `limpiarAviso` | Muestran u ocultan el mensaje de aviso junto a los botones (p. ej. al agotar las tiradas) |
+
+El código incluye comentarios puntuales solo donde el motivo de una decisión no es evidente por sí solo (por ejemplo, por qué `firmasJugadores` se inicializa vacío para cada jugador, o por qué la firma de una mano se ordena por repetición antes que por valor); el resto se apoya en nombres descriptivos.
 
 El registro por consola usa `console.group`/`console.groupEnd` para agrupar cada acción (Comenzar Juego, Finalizar Tiradas de cada jugador, Finalizar Juego) en secciones plegables en las herramientas de desarrollador, en vez de líneas sueltas.
 

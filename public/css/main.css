@@ -183,6 +183,7 @@ body {
 	margin-top: 4px;
 }
 
+/* sin :empty, el span vacio sigue contando en el flex y su gap descentra el boton "Realizar Tirada" */
 #panelBtnFinTiradas:empty {
 	display: none;
 }
