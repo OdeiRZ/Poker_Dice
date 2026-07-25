@@ -51,6 +51,7 @@ function inicializarVariables() {
 	numJugadorActual = 1;
 	numTurnoActual = 1;
 	dadosActuales = [];
+	$("#resultados").html('');
 }
 
 function inicializarPuntuaciones() {
@@ -94,6 +95,7 @@ function realizarTirada() {
 
 function pintarTablero() {
 	$("#tablero").html('');
+	$("#tablero").append("<strong>Jugador " + numJugadorActual + " - Tirada " + numTiradaJugador + "/" + numTiradasMax + "</strong><br>");
 	for (let dado = 1; dado <= numDadosMax; dado++) {
 		let dadoActual = dadosActuales[dado - 1];
 		let etiqueta = swPoker ? figurasPoker[dadoActual.valor] : dadoActual.valor;
@@ -141,9 +143,28 @@ function finalizarTiradas() {
 	puntFinalJugadores[numJugadorActual] = mano.puntos;
 	console.log("Valores: " + valores.join(", "));
 	console.log("Mano de Jugador " + numJugadorActual + ": " + mano.nombre + " (" + mano.puntos + " puntos)");
+	$("#resultados").append("Jugador " + numJugadorActual + ": " + mano.nombre + " (" + mano.puntos + " puntos)<br>");
 
-	reiniciarBotones();
 	reiniciarTablero();
+
+	if (numJugadorActual < numJugadoresMax) {
+		numJugadorActual++;
+		numTiradaJugador = 0;
+		console.log("Turno de Jugador " + numJugadorActual);
+	} else {
+		finalizarJuego();
+	}
+}
+
+function mostrarGanador() {
+	let ganador = 1;
+	for (let i = 2; i <= numJugadoresMax; i++) {
+		if (puntFinalJugadores[i] > puntFinalJugadores[ganador]) {
+			ganador = i;
+		}
+	}
+	console.log("Ganador: Jugador " + ganador + " con " + puntFinalJugadores[ganador] + " puntos");
+	$("#resultados").append("<br><strong>Ganador: Jugador " + ganador + " (" + puntFinalJugadores[ganador] + " puntos)</strong><br>");
 }
 
 function finalizarJuego() {
@@ -153,6 +174,7 @@ function finalizarJuego() {
 	for (let i = 1; i <= numJugadoresMax; i++) {
 		console.log("Puntuación final de Jugador " + i + ": " + puntFinalJugadores[i]);
 	}
+	mostrarGanador();
 	reiniciarBotones();
 	reiniciarTablero();
 }
