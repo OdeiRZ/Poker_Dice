@@ -16,37 +16,20 @@ $(document).ready(function() {
 });
 
 function comenzarJuego() {
-	console.log("_______________________");
-	console.log("Inicializamos variables");
-	console.log("_______________________");
+	console.group("🎲 Comenzar Juego");
 	inicializarVariables();
-	console.log("Jugadores: " + numJugadoresMax);
-	console.log("Dados: " + numDadosMax);
-	console.log("Caras de Dados: " + numCarasDadoMax);
-	console.log("Tiradas: " + numTiradasMax);
-	console.log("Dados de Poker: " + ((swPoker) ? "Si" : "No"));
+	console.log("Configuración → Jugadores: " + numJugadoresMax + ", Dados: " + numDadosMax + ", Caras: " + numCarasDadoMax + ", Tiradas: " + numTiradasMax + ", Modo Póker: " + (swPoker ? "Sí" : "No"));
 	validarConfiguracion();
-
-	console.log("__________________________");
-	console.log("Inicializamos Puntuaciones");
-	console.log("__________________________");
 	inicializarPuntuaciones();
-
-	console.log("_________________");
-	console.log("Ocultamos Botones");
-	console.log("_________________");
-	ocultarBotones();
-
-	console.log("________________");
-	console.log("Comenzamos juego");
-	console.log("________________");
+	mostrarPantallaJuego();
+	console.groupEnd();
 }
 
 function inicializarVariables() {
-	numJugadoresMax = $("#numJugadoresMax").find(":selected").val();
-	numDadosMax = $("#numDadosMax").find(":selected").val();
-	numCarasDadoMax = $("#numCarasDadoMax").find(":selected").val();
-	numTiradasMax = $("#numTiradasMax").find(":selected").val();
+	numJugadoresMax = Number($("#numJugadoresMax").find(":selected").val());
+	numDadosMax = Number($("#numDadosMax").find(":selected").val());
+	numCarasDadoMax = Number($("#numCarasDadoMax").find(":selected").val());
+	numTiradasMax = Number($("#numTiradasMax").find(":selected").val());
 	swPoker = $("#swPoker").is(":checked");
 	numTiradaJugador = 0;
 	numJugadorActual = 1;
@@ -57,7 +40,7 @@ function inicializarVariables() {
 }
 
 function validarConfiguracion() {
-	if (Number(numDadosMax) > Number(numCarasDadoMax)) {
+	if (numDadosMax > numCarasDadoMax) {
 		console.warn("Con más dados (" + numDadosMax + ") que caras (" + numCarasDadoMax + "), la Escalera nunca podrá conseguirse.");
 	}
 }
@@ -101,12 +84,11 @@ function inicializarPuntuaciones() {
 	for (let i = 1; i <= numJugadoresMax; i++) {
 		puntFinalJugadores[i] = 0;
 		firmasJugadores[i] = [];
-		console.log("Puntuación de Jugador " + i + ": " + puntFinalJugadores[i]);
 	}
+	console.log("Puntuaciones inicializadas para " + numJugadoresMax + " jugador(es)");
 }
 
-function ocultarBotones() {
-	console.log("Botones Ocultados");
+function mostrarPantallaJuego() {
 	$("#panelConfiguracion").hide();
 	$("#panelJuego").show();
 	$("#panelBtnTirada").show();
@@ -122,12 +104,8 @@ function actualizarTurnoInfo() {
 }
 
 function realizarTirada() {
-	console.log("_________________");
-	console.log("Realizamos Tirada");
-	console.log("_________________");
-
 	if (numTiradaJugador >= numTiradasMax) {
-		console.log("No quedan tiradas disponibles");
+		console.log("Realizar Tirada: no quedan tiradas disponibles para el Jugador " + numJugadorActual);
 		return;
 	}
 	numTiradaJugador++;
@@ -138,6 +116,7 @@ function realizarTirada() {
 		}
 	}
 
+	console.log("Tirada " + numTiradaJugador + "/" + numTiradasMax + " de Jugador " + numJugadorActual + " → " + dadosActuales.map(d => d.valor).join(", "));
 	pintarTablero();
 }
 
@@ -150,15 +129,12 @@ function pintarTablero() {
 		let id = dado+'_'+numTiradaJugador+'_'+numJugadorActual;
 		let marcado = dadoActual.guardado ? ' checked' : '';
 		let titulo = dadoActual.guardado ? 'Haz clic para relanzar este dado' : 'Haz clic para guardar este dado';
-		$("#tablero").append('<span class="dado" title="'+titulo+'"><input type="checkbox" id="'+id+'" name="'+id+'" value="'+dadoActual.valor+'"'+marcado+' onchange="calcularPuntos(this)"><label for="'+id+'">'+etiqueta+'</label></span>');
+		$("#tablero").append('<span class="dado" title="'+titulo+'"><input type="checkbox" id="'+id+'" name="'+id+'" value="'+dadoActual.valor+'"'+marcado+' onchange="alternarGuardado(this)"><label for="'+id+'">'+etiqueta+'</label></span>');
 	}
 	$("#panelBtnFinTiradas").html('<input type="button" id="btnFinTirada" value="Finalizar Tiradas" onclick="finalizarTiradas()">');
 }
 
-function calcularPuntos(that) {
-	console.log("_______________");
-	console.log("Calcular Puntos");
-	console.log("_______________");
+function alternarGuardado(that) {
 	let dado = parseInt(that.id.split('_')[0], 10);
 	dadosActuales[dado - 1].guardado = that.checked;
 	console.log("Dado " + dado + (that.checked ? " guardado" : " liberado"));
@@ -204,16 +180,14 @@ function compararJugadores(a, b) {
 }
 
 function finalizarTiradas() {
-	console.log("_________________");
-	console.log("Finalizar Tiradas");
-	console.log("_________________");
+	console.group("Finalizar Tiradas — Jugador " + numJugadorActual);
 
 	let valores = dadosActuales.map(d => d.valor);
 	let mano = evaluarMano(valores);
 	puntFinalJugadores[numJugadorActual] = mano.puntos;
 	firmasJugadores[numJugadorActual] = mano.firma;
-	console.log("Valores: " + valores.join(", "));
-	console.log("Mano de Jugador " + numJugadorActual + ": " + mano.nombre + " (" + mano.puntos + " puntos)");
+	console.log("Dados: " + valores.join(", ") + " → " + mano.nombre + " (" + mano.puntos + " pts)");
+
 	let etiquetasFirma = mano.firma.map(v => swPoker ? figurasPoker[v] : v).join(", ");
 	$("#resultados").append(
 		'<div class="resultado-jugador">' +
@@ -235,7 +209,9 @@ function finalizarTiradas() {
 		numTiradaJugador = 0;
 		console.log("Turno de Jugador " + numJugadorActual);
 		actualizarTurnoInfo();
+		console.groupEnd();
 	} else {
+		console.groupEnd();
 		finalizarJuego();
 	}
 }
@@ -252,12 +228,12 @@ function mostrarGanador() {
 	}
 
 	if (ganadores.length > 1) {
-		console.log("Empate entre Jugadores: " + ganadores.join(", ") + " (" + puntFinalJugadores[ganadores[0]] + " puntos)");
+		console.log("Resultado: empate entre Jugadores " + ganadores.join(", ") + " (" + puntFinalJugadores[ganadores[0]] + " pts)");
 		$("#resultados").append(
 			'<div class="veredicto veredicto-empate">🤝 Empate entre Jugadores ' + ganadores.join(", ") + ' (' + puntFinalJugadores[ganadores[0]] + ' puntos)</div>'
 		);
 	} else {
-		console.log("Ganador: Jugador " + ganadores[0] + " con " + puntFinalJugadores[ganadores[0]] + " puntos");
+		console.log("Resultado: gana Jugador " + ganadores[0] + " (" + puntFinalJugadores[ganadores[0]] + " pts)");
 		$("#resultados").append(
 			'<div class="veredicto veredicto-ganador">🏆 Ganador: Jugador ' + ganadores[0] + ' (' + puntFinalJugadores[ganadores[0]] + ' puntos)</div>'
 		);
@@ -265,32 +241,22 @@ function mostrarGanador() {
 }
 
 function finalizarJuego() {
-	console.log("_______________");
-	console.log("Finalizar Juego");
-	console.log("_______________");
-	for (let i = 1; i <= numJugadoresMax; i++) {
-		console.log("Puntuación final de Jugador " + i + ": " + puntFinalJugadores[i]);
-	}
+	console.group("🏁 Finalizar Juego");
+	console.log("Puntuaciones finales: " + puntFinalJugadores.slice(1).map((p, i) => "Jugador " + (i + 1) + "=" + p).join(", "));
 	mostrarGanador();
-	reiniciarBotones();
+	mostrarPantallaConfiguracion();
 	reiniciarTablero();
+	console.groupEnd();
 }
 
-function reiniciarBotones() {
-	console.log("_________________");
-	console.log("Reiniciar Botones");
-	console.log("_________________");
+function mostrarPantallaConfiguracion() {
 	$("#panelBtnTirada").hide();
 	$("#panelBtnFin").hide();
 	$("#panelJuego").hide();
 	$("#panelConfiguracion").show();
-	console.log("Botones Reiniciados");
 }
 
 function reiniciarTablero() {
-	console.log("_________________");
-	console.log("Reiniciar Tablero");
-	console.log("_________________");
 	$("#tablero").html('');
 	$("#turnoInfo").html('');
 	$("#panelBtnFinTiradas").html('');
