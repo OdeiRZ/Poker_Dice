@@ -4,6 +4,7 @@ var numJugadorActual;
 var numTurnoActual;
 var numCarasDadoMax;
 var numDadosMax;
+var numDadosARelanzar;
 var numTiradasMax;
 var numTiradaJugador;
 var swPoker;
@@ -11,30 +12,7 @@ var puntFinalJugadores = [];
 const figurasPoker = ["", "7", "8", "J", "Q", "K", "•"];
 
 $(document).ready(function() {
-	//https://programadorwebvalencia.com/sencillo-boton-on-off-html-y-css/
-/*	$("#tablero").append("Comienzo de Partida<br>");
-	for (let turno = 1; turno <= numCarasDadoMax; turno++) {
-		$("#tablero").append("&nbsp; &nbsp; Turno " + turno + "<br>");
-		for (let jugador = 1; jugador <= numJugadoresMax; jugador++) {
-			$("#tablero").append("&nbsp; &nbsp; &nbsp; &nbsp; Jugador " + jugador + "<br>");
-			for (let tirada = 1; tirada <= numTiradasMax; tirada++) {
-				$("#tablero").append("&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Tirada " + tirada + "<br>");
-				let tiradas = "";
-				$("#tablero").append("&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ");
-				for (let dado = 1; dado <= numDadosMax; dado++) {
-					let num = Math.ceil(Math.random() * numCarasDadoMax);
-					if (swPoker) {
-						num = figurasPoker[num];
-					}
-					//tiradas += num + " ";
-					$("#tablero").append('<input type="checkbox" id="'+dado+'_'+tirada+'_'+jugador+'_'+turno+'" name="'+dado+'_'+tirada+'_'+jugador+'_'+turno+'" value="'+num+'">');
-					$("#tablero").append('<label for="'+dado+'_'+tirada+'_'+jugador+'_'+turno+'">'+num+'</label>');
-				}
-				$("#tablero").append("<br>");
-			}
-			$("#tablero").append("&nbsp; &nbsp; Puntuación de Jugador " + jugador + ": " + puntFinalJugadores[jugador] + "<br>");
-		}
-	}*/
+
 });
 
 function comenzarJuego() {
@@ -66,6 +44,7 @@ function comenzarJuego() {
 function inicializarVariables() {
 	numJugadoresMax = $("#numJugadoresMax").find(":selected").val();
 	numDadosMax = $("#numDadosMax").find(":selected").val();
+	numDadosARelanzar = numDadosMax;
 	numCarasDadoMax = $("#numCarasDadoMax").find(":selected").val();
 	numTiradasMax = $("#numTiradasMax").find(":selected").val();
 	swPoker = $("#swPoker").is(":checked");
@@ -98,23 +77,26 @@ function realizarTirada() {
 	console.log("Realizamos Tirada");
 	console.log("_________________");
 
-	numTiradaJugador++;
-	if (numTiradaJugador <= numTiradasMax) {
-		for (let dado = 1; dado <= numDadosMax; dado++) {
-			let num = Math.ceil(Math.random() * numCarasDadoMax);
-			if (swPoker) {
-				num = figurasPoker[num];
-			}
-			$("#tablero").append('<input type="checkbox" id="'+dado+'_'+numTiradaJugador+'_'+numJugadorActual+'_'+numTurnoActual+'" name="'+numTiradaJugador+'_'+numJugadorActual+'_'+numTurnoActual+'" onchange="calcularPuntos(this)">');
-			$("#tablero").append('<label for="'+dado+'_'+numTiradaJugador+'_'+numJugadorActual+'_'+numTurnoActual+'">'+num+'</label> ');
-		}
-		$("#tablero").append('<input type="button" id="btnFinTirada" value="Finalizar Tiradas" onclick="finalizarTiradas()"><br>');
-		/*console.log();
-		$("input[name='bla[]']").each( function () {
-			alert( $(this).val() );
-		});*/
+	if (numDadosARelanzar <= 0) {
+		console.log("No quedan dados por relanzar");
+		return;
 	}
-	//numJugadorActual
+
+	numTiradaJugador++;
+	if (numTiradaJugador > numTiradasMax) {
+		console.log("No quedan tiradas disponibles");
+		return;
+	}
+
+	for (let dado = 1; dado <= numDadosARelanzar; dado++) {
+		let num = Math.ceil(Math.random() * numCarasDadoMax);
+		if (swPoker) {
+			num = figurasPoker[num];
+		}
+		$("#tablero").append('<input type="checkbox" id="'+dado+'_'+numTiradaJugador+'_'+numJugadorActual+'_'+numTurnoActual+'" name="'+dado+'_'+numTiradaJugador+'_'+numJugadorActual+'_'+numTurnoActual+'" value="'+num+'" onchange="calcularPuntos(this)">');
+		$("#tablero").append('<label for="'+dado+'_'+numTiradaJugador+'_'+numJugadorActual+'_'+numTurnoActual+'">'+num+'</label>');
+	}
+	$("#tablero").append(' <input type="button" id="btnFinTirada" value="Finalizar Tiradas" onclick="finalizarTiradas()"><br>');
 }
 
 function calcularPuntos(that) {
@@ -122,28 +104,33 @@ function calcularPuntos(that) {
 	console.log("Calcular Puntos");
 	console.log("_______________");
 	console.log(that);
+	if (that.checked) {
+		numDadosARelanzar--;
+	} else {
+		numDadosARelanzar++;
+	}
 }
 
 function finalizarTiradas() {
 	console.log("_________________");
 	console.log("Finalizar Tiradas");
 	console.log("_________________");
-
+	reiniciarBotones();
+	reiniciarTablero();
 }
 
 function finalizarJuego() {
 	console.log("_______________");
 	console.log("Finalizar Juego");
 	console.log("_______________");
-
-	console.log("_________________");
-	console.log("Reiniciar Botones");
-	console.log("_________________");
 	reiniciarBotones();
+	reiniciarTablero();
 }
 
 function reiniciarBotones() {
-	console.log("Botones Reiniciados"); 
+	console.log("_________________");
+	console.log("Reiniciar Botones");
+	console.log("_________________");
 	$("#panelBtnTirada").hide();
 	$("#panelBtnFin").hide();
 	$("#panelJugadores").show();
@@ -152,4 +139,12 @@ function reiniciarBotones() {
 	$("#panelTiradas").show();
 	$("#panelSwPoker").show();
 	$("#panelBtnInicio").show();
+	console.log("Botones Reiniciados"); 
+}
+
+function reiniciarTablero() {
+	console.log("_________________");
+	console.log("Reiniciar Tablero");
+	console.log("_________________");
+	$("#tablero").html('');
 }
