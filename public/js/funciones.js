@@ -103,16 +103,15 @@ function realizarTirada() {
 
 function pintarTablero() {
 	$("#tablero").html('');
-	$("#tablero").append("<strong>Jugador " + numJugadorActual + " - Tirada " + numTiradaJugador + "/" + numTiradasMax + "</strong><br>");
+	$("#tablero").append('<strong class="turno-info">Jugador ' + numJugadorActual + ' - Tirada ' + numTiradaJugador + '/' + numTiradasMax + '</strong><br>');
 	for (let dado = 1; dado <= numDadosMax; dado++) {
 		let dadoActual = dadosActuales[dado - 1];
 		let etiqueta = swPoker ? figurasPoker[dadoActual.valor] : dadoActual.valor;
 		let id = dado+'_'+numTiradaJugador+'_'+numJugadorActual;
 		let marcado = dadoActual.guardado ? ' checked' : '';
-		$("#tablero").append('<input type="checkbox" id="'+id+'" name="'+id+'" value="'+dadoActual.valor+'"'+marcado+' onchange="calcularPuntos(this)">');
-		$("#tablero").append('<label for="'+id+'">'+etiqueta+'</label>');
+		$("#tablero").append('<span class="dado"><input type="checkbox" id="'+id+'" name="'+id+'" value="'+dadoActual.valor+'"'+marcado+' onchange="calcularPuntos(this)"><label for="'+id+'">'+etiqueta+'</label></span>');
 	}
-	$("#tablero").append(' <input type="button" id="btnFinTirada" value="Finalizar Tiradas" onclick="finalizarTiradas()"><br>');
+	$("#tablero").append('<br><input type="button" id="btnFinTirada" value="Finalizar Tiradas" onclick="finalizarTiradas()">');
 }
 
 function calcularPuntos(that) {

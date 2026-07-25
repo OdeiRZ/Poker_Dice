@@ -1,4 +1,76 @@
 
+body {
+	font-family: Arial, Helvetica, sans-serif;
+}
+
 #panelBtnFin, #panelBtnTirada {
+	display: none;
+}
+
+input[type="button"] {
+	padding: 6px 14px;
+	margin: 4px 4px 4px 0;
+	border: 1px solid #888;
+	border-radius: 4px;
+	background: #f0f0f0;
+	cursor: pointer;
+}
+
+input[type="button"]:hover {
+	background: #e0e0e0;
+}
+
+.turno-info {
+	display: inline-block;
+	margin: 8px 0 4px;
+}
+
+.dado {
+	display: inline-block;
+}
+
+.dado input[type="checkbox"] {
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+.dado label {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 48px;
+	height: 48px;
+	margin: 4px;
+	border: 2px solid #333;
+	border-radius: 8px;
+	background: #fff;
+	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+	font-size: 1.4rem;
+	font-weight: bold;
+	cursor: pointer;
+	user-select: none;
+}
+
+.dado input[type="checkbox"]:checked + label {
+	background: #ffd54f;
+	border-color: #f57f17;
+}
+
+.dado input[type="checkbox"]:focus-visible + label {
+	outline: 2px solid #1976d2;
+}
+
+#resultados {
+	margin-top: 16px;
+	padding: 8px 14px;
+	max-width: 320px;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+	background: #fafafa;
+}
+
+#resultados:empty {
 	display: none;
 }
