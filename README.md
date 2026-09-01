@@ -2,6 +2,8 @@
 
 Juego de dados de póker (Poker Dice) jugable en el navegador, desarrollado con HTML, CSS y JavaScript (jQuery), sin backend ni dependencias externas.
 
+**En vivo**: [poker-dice.pages.dev](https://poker-dice.pages.dev).
+
 ## Cómo jugar
 
 1. Configura la partida: número de jugadores (1-4) y si se usan símbolos de dados de póker (7, 8, J, Q, K, As) en vez de números. El número de dados (3-6), de caras por dado (2-6) y de tiradas por turno (1-3) están agrupados en **Opciones avanzadas**, plegado por defecto con los valores de la partida clásica (5 dados, 6 caras, 3 tiradas). El botón **Ver puntuación** de la cabecera muestra en cualquier momento el ranking de manos, marcando en gris las que son imposibles de conseguir con la configuración elegida (por ejemplo, la Escalera si hay más dados que caras).
@@ -53,6 +55,14 @@ python -m http.server 8000 --directory public
 ```
 
 y abrir `http://localhost:8000`.
+
+## Despliegue
+
+Desplegado en [Cloudflare Pages](https://pages.cloudflare.com), conectado
+directamente al repositorio de GitHub: cada push a `main` se despliega solo,
+sin ningún paso de compilación (el directorio publicado es `public/` tal
+cual). Mismo servicio que usan LudoDex, MIRA MarketLens y PequeDex para su
+frontend, aquí sin backend que desplegar aparte.
 
 ## Estructura del proyecto
 
