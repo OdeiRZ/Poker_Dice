@@ -161,8 +161,8 @@ function evaluarMano(valores) {
 	let repeticiones = Object.values(conteos).sort((a, b) => b - a);
 	let esEscalera = Object.keys(conteos).length === valores.length &&
 		(Math.max(...valores) - Math.min(...valores)) === valores.length - 1;
-	// firma: valores ordenados por repeticion (el grupo que define la mano primero) y luego por valor descendente,
-	// para poder comparar dos manos de la misma categoria como en el poker (trio/pareja mas alto, despues los kickers)
+	// firma: valores ordenados por repeticion (el grupo que define la mano primero) y luego por valor descendente -
+	// es lo que se le muestra al jugador como "de que dados sale la mano"
 	let firma = Object.keys(conteos)
 		.map(Number)
 		.sort((a, b) => conteos[b] - conteos[a] || b - a)
@@ -179,13 +179,25 @@ function evaluarMano(valores) {
 	else mano = { nombre: "Nada", puntos: 1 };
 
 	mano.firma = firma;
+	// Con mas de 5 dados, dos manos pueden compartir categoria y puntos
+	// (p.ej. "Trío") teniendo formas distintas: un trío doble (dos grupos
+	// de 3, solo posible con 6 dados) frente a un trío simple con
+	// kickers sueltos. Comparando solo por firma, el segundo trío de la
+	// primera mano perdia el desempate frente a un kicker alto suelto de
+	// la segunda, como si la mano mas fuerte fuera la mas debil. Anteponer
+	// la forma (repeticiones, rellenada a longitud fija para que
+	// compararManos siempre compare arrays del mismo tamaño) resuelve el
+	// desempate correctamente sin tocar la categoria ni los puntos que ve
+	// el jugador - solo compararManos usa este campo, la firma de arriba
+	// (para mostrar) no cambia.
+	mano.desempate = repeticiones.concat(Array(valores.length - repeticiones.length).fill(0)).concat(firma);
 	return mano;
 }
 
-function compararManos(firmaA, firmaB) {
+function compararManos(desempateA, desempateB) {
 	// comparacion lexicografica: la primera posicion en que difieren decide (misma logica que un desempate por kicker)
-	for (let i = 0; i < firmaA.length; i++) {
-		if (firmaA[i] !== firmaB[i]) return firmaA[i] - firmaB[i];
+	for (let i = 0; i < desempateA.length; i++) {
+		if (desempateA[i] !== desempateB[i]) return desempateA[i] - desempateB[i];
 	}
 	return 0;
 }
@@ -203,7 +215,7 @@ function finalizarTiradas() {
 	let valores = dadosActuales.map(d => d.valor);
 	let mano = evaluarMano(valores);
 	puntFinalJugadores[numJugadorActual] = mano.puntos;
-	firmasJugadores[numJugadorActual] = mano.firma;
+	firmasJugadores[numJugadorActual] = mano.desempate;
 	console.log("Dados: " + valores.join(", ") + " → " + mano.nombre + " (" + mano.puntos + " pts)");
 
 	let etiquetasFirma = mano.firma.map(v => swPoker ? figurasPoker[v] : v).join(", ");
