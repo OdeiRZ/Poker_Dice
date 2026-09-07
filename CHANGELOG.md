@@ -32,6 +32,9 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - "Realizar Tirada" se deshabilita en cuanto se agotan las tiradas del
   turno actual, en vez de quedarse activo y solo mostrar un aviso al
   pulsarlo; se reactiva automáticamente al pasar al siguiente jugador.
+- Con un solo jugador, el veredicto final ya no dice "Ganador: Jugador
+  1" (no hay contra quien ganar) — ahora muestra "Tu resultado: X
+  puntos".
 
 ### Corregido
 

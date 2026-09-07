@@ -266,6 +266,16 @@ function finalizarTiradas() {
 }
 
 function mostrarGanador() {
+	// con 1 solo jugador no hay contra quien ganar - "Ganador: Jugador 1" es
+	// un veredicto trivial y confuso, mejor mostrar el resultado sin más
+	if (numJugadoresMax === 1) {
+		console.log("Resultado: " + puntFinalJugadores[1] + " pts");
+		$("#resultados").append(
+			'<div class="veredicto veredicto-ganador">🎯 Tu resultado: ' + puntFinalJugadores[1] + ' puntos</div>'
+		);
+		return;
+	}
+
 	let ganadores = [1];
 	for (let i = 2; i <= numJugadoresMax; i++) {
 		let cmp = compararJugadores(i, ganadores[0]);
