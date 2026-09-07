@@ -27,8 +27,7 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - Los botones "Realizar Tirada", "Finalizar Tiradas" y "Finalizar Juego"
   ganan un icono (🎲, 🏁 y 🚪) con una pequeña animación al pasar el
   ratón o el foco (el dado gira, la bandera ondea, la puerta se
-  sacude), en vez de ser solo texto plano. Se respeta
-  `prefers-reduced-motion` desactivando esas animaciones.
+  sacude), en vez de ser solo texto plano.
 - "Realizar Tirada" se deshabilita en cuanto se agotan las tiradas del
   turno actual, en vez de quedarse activo y solo mostrar un aviso al
   pulsarlo; se reactiva automáticamente al pasar al siguiente jugador.
@@ -43,6 +42,14 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 
 ### Corregido
 
+- La regla que desactivaba las animaciones de icono cuando el sistema
+  tiene activado `prefers-reduced-motion` solo funcionaba en 3 de los 5
+  botones (`#btnFin`, `#btnEscala`, `#btnInicio`): las reglas de
+  `#btnTirada` y `#btnFinTirada` tenían más especificidad o venían
+  después en el CSS, así que ganaban igualmente y sus animaciones se
+  veían aunque el sistema pidiera lo contrario — inconsistente entre
+  botones. Se elimina la regla por completo: las 5 animaciones se
+  disparan siempre, sin depender de esa preferencia del sistema.
 - El margen añadido al tablero de dados dejaba un hueco vacío grande
   entre los botones de tirar y "Finalizar Juego" mientras aún no se
   había tirado ningún dado. Ahora ese margen solo se aplica cuando el
