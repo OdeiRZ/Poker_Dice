@@ -248,17 +248,26 @@ button:active {
 	box-shadow: none;
 }
 
+input[type="button"]:disabled,
+button:disabled {
+	background: var(--color-muted);
+	color: rgba(255, 255, 255, 0.85);
+	cursor: not-allowed;
+	box-shadow: none;
+	transform: none;
+}
+
 .btn-icon {
 	display: inline-block;
 	margin-right: 6px;
 }
 
-#btnTirada:hover .btn-icon,
-#btnTirada:focus-visible .btn-icon {
+#btnTirada:not(:disabled):hover .btn-icon,
+#btnTirada:not(:disabled):focus-visible .btn-icon {
 	animation: girarDado 0.5s ease;
 }
 
-#btnTirada:active .btn-icon {
+#btnTirada:not(:disabled):active .btn-icon {
 	transform: scale(0.8) rotate(20deg);
 }
 

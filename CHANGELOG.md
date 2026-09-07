@@ -29,6 +29,9 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
   ratón o el foco (el dado gira, la bandera ondea, la puerta se
   sacude), en vez de ser solo texto plano. Se respeta
   `prefers-reduced-motion` desactivando esas animaciones.
+- "Realizar Tirada" se deshabilita en cuanto se agotan las tiradas del
+  turno actual, en vez de quedarse activo y solo mostrar un aviso al
+  pulsarlo; se reactiva automáticamente al pasar al siguiente jugador.
 
 ### Corregido
 

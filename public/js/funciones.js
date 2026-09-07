@@ -121,6 +121,7 @@ function actualizarTurnoInfo() {
 		? ' - Tirada ' + numTiradaJugador + '/' + numTiradasMax
 		: ' - Pulsa "Realizar Tirada" para empezar';
 	$("#turnoInfo").html('<strong class="turno-info">Jugador ' + numJugadorActual + detalle + '</strong>');
+	$("#btnTirada").prop("disabled", numTiradaJugador >= numTiradasMax);
 }
 
 function mostrarAviso(mensaje) {
