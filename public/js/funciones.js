@@ -11,8 +11,8 @@ var firmasJugadores = [];
 var dadosActuales = [];
 var animandoTirada = false;
 const figurasPoker = ["", "7", "8", "J", "Q", "K", "•"];
-const DURACION_ANIMACION_TIRADA_MS = 350;
-const INTERVALO_PARPADEO_TIRADA_MS = 70;
+const DURACION_ANIMACION_TIRADA_MS = 600;
+const RETRASO_ENTRE_DADOS_MS = 40;
 
 $(document).ready(function() {
 	actualizarDisponibilidadSwPoker();
@@ -164,33 +164,26 @@ function realizarTirada() {
 	animarTirada(indicesRelanzados);
 }
 
-// Los dados que se relanzan muestran valores aleatorios en bucle durante
-// un instante (con un pequeño balanceo CSS) antes de asentarse en el
-// resultado real, que ya está decidido desde realizarTirada() - la
-// animación es puramente visual, nunca cambia el resultado. Los dados
+// Los dados que se relanzan "caen" sobre el tablero con un pequeño
+// rebote CSS antes de quedar quietos - el valor ya es el real desde el
+// momento en que se pintan (realizarTirada ya lo decidió), la animación
+// es puramente de movimiento, nunca cambia el resultado. Los dados
 // guardados no se tocan. Se bloquean los botones y las casillas de
 // guardar mientras dura para evitar acciones a medio camino (finalizar
 // tiradas, abortar la partida, guardar un dado) sobre un resultado que
-// el jugador aún no ha visto asentarse.
+// el jugador aún no ha visto asentarse. Caen en cascada (un pequeño
+// retraso por dado) en vez de todos a la vez.
 function animarTirada(indicesRelanzados) {
 	animandoTirada = true;
 	pintarTablero(indicesRelanzados);
 	$("#btnTirada, #btnFin").prop("disabled", true);
 
-	let intervalo = setInterval(function() {
-		indicesRelanzados.forEach(function(dado) {
-			let valorAleatorio = Math.ceil(Math.random() * numCarasDadoMax);
-			let etiqueta = swPoker ? figurasPoker[valorAleatorio] : valorAleatorio;
-			$("#etiquetaDado" + dado).text(etiqueta);
-		});
-	}, INTERVALO_PARPADEO_TIRADA_MS);
-
+	let duracionTotal = DURACION_ANIMACION_TIRADA_MS + (indicesRelanzados.length - 1) * RETRASO_ENTRE_DADOS_MS;
 	setTimeout(function() {
-		clearInterval(intervalo);
 		animandoTirada = false;
 		pintarTablero();
 		$("#btnFin").prop("disabled", false);
-	}, DURACION_ANIMACION_TIRADA_MS);
+	}, duracionTotal);
 }
 
 function pintarTablero(indicesRodando) {
@@ -202,11 +195,13 @@ function pintarTablero(indicesRodando) {
 		let etiqueta = swPoker ? figurasPoker[dadoActual.valor] : dadoActual.valor;
 		let id = dado+'_'+numTiradaJugador+'_'+numJugadorActual; // alternarGuardado obtiene el indice del dado del primer segmento del id
 		let marcado = dadoActual.guardado ? ' checked' : '';
-		let rodando = indicesRodando.includes(dado);
+		let posicionRodando = indicesRodando.indexOf(dado);
+		let rodando = posicionRodando !== -1;
 		let claseRodando = rodando ? ' rodando' : '';
 		let deshabilitado = rodando ? ' disabled' : '';
+		let estiloRetraso = rodando ? ' style="animation-delay:'+(posicionRodando * RETRASO_ENTRE_DADOS_MS)+'ms"' : '';
 		let titulo = dadoActual.guardado ? 'Haz clic para relanzar este dado' : 'Haz clic para guardar este dado';
-		$("#tablero").append('<span class="dado'+claseRodando+'" title="'+titulo+'"><input type="checkbox" id="'+id+'" name="'+id+'" value="'+dadoActual.valor+'"'+marcado+deshabilitado+' onchange="alternarGuardado(this)"><label id="etiquetaDado'+dado+'" for="'+id+'">'+etiqueta+'</label></span>');
+		$("#tablero").append('<span class="dado'+claseRodando+'" title="'+titulo+'"><input type="checkbox" id="'+id+'" name="'+id+'" value="'+dadoActual.valor+'"'+marcado+deshabilitado+' onchange="alternarGuardado(this)"><label id="etiquetaDado'+dado+'" for="'+id+'"'+estiloRetraso+'>'+etiqueta+'</label></span>');
 	}
 	$("#panelBtnFinTiradas").html(animandoTirada ? '' : '<button type="button" id="btnFinTirada" onclick="finalizarTiradas()"><span class="btn-icon" aria-hidden="true">🏁</span>Finalizar Tiradas</button>');
 }

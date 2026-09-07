@@ -413,21 +413,21 @@ margen solo deja un hueco vacio entre los botones de encima y de debajo */
 }
 
 .dado.rodando label {
-	animation: rodarDado 0.15s linear infinite;
+	animation: caidaDado 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
 	cursor: default;
-	border-color: var(--color-primary);
 }
 
 .dado.rodando label:hover {
 	transform: none;
 }
 
-@keyframes rodarDado {
-	0% { transform: rotate(0deg); }
-	25% { transform: rotate(12deg) scale(1.05); }
-	50% { transform: rotate(0deg); }
-	75% { transform: rotate(-12deg) scale(1.05); }
-	100% { transform: rotate(0deg); }
+@keyframes caidaDado {
+	0%   { transform: translateY(-90px) scale(0.9); opacity: 0; }
+	45%  { transform: translateY(0) scale(1.05); opacity: 1; }
+	65%  { transform: translateY(-14px) scale(1); }
+	82%  { transform: translateY(0) scale(1); }
+	92%  { transform: translateY(-5px) scale(1); }
+	100% { transform: translateY(0) scale(1); }
 }
 
 .dado input[type="checkbox"]:checked + label {

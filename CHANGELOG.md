@@ -40,13 +40,13 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - "Ver puntuación" y "Comenzar Juego" ganan también icono animado (📊 y
   🎮), igual que el resto de botones de la partida.
 - Al pulsar "Realizar Tirada", los dados que se relanzan (los no
-  guardados) muestran valores aleatorios en bucle durante un instante,
-  con un pequeño balanceo, antes de asentarse en el resultado real —
-  que ya está decidido desde el primer momento, la animación es
-  puramente visual. Los dados guardados no se tocan. Mientras dura, se
-  bloquean "Realizar Tirada", "Finalizar Juego" y las casillas de
-  guardar, para evitar acciones a medio camino sobre un resultado que
-  el jugador aún no ha visto asentarse.
+  guardados) "caen" sobre el tablero con un pequeño rebote, en cascada
+  (un pequeño retraso entre cada uno) — el valor ya está decidido desde
+  el primer momento, la animación es puramente de movimiento. Los dados
+  guardados no se tocan. Mientras dura, se bloquean "Realizar Tirada",
+  "Finalizar Juego" y las casillas de guardar, para evitar acciones a
+  medio camino sobre un resultado que el jugador aún no ha visto
+  asentarse.
 
 ### Corregido
 
