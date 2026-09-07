@@ -9,7 +9,10 @@ var swPoker;
 var puntFinalJugadores = [];
 var firmasJugadores = [];
 var dadosActuales = [];
+var animandoTirada = false;
 const figurasPoker = ["", "7", "8", "J", "Q", "K", "•"];
+const DURACION_ANIMACION_TIRADA_MS = 350;
+const INTERVALO_PARPADEO_TIRADA_MS = 70;
 
 $(document).ready(function() {
 	actualizarDisponibilidadSwPoker();
@@ -52,6 +55,7 @@ function inicializarVariables() {
 	numTiradaJugador = 0;
 	numJugadorActual = 1;
 	dadosActuales = [];
+	animandoTirada = false;
 	puntFinalJugadores = [];
 	firmasJugadores = [];
 	$("#resultados").html('');
@@ -135,6 +139,10 @@ function limpiarAviso() {
 function realizarTirada() {
 	limpiarAviso();
 
+	if (animandoTirada) {
+		return; // ya hay una tirada en curso, ignorar clics repetidos
+	}
+
 	if (numTiradaJugador >= numTiradasMax) {
 		console.log("Realizar Tirada: no quedan tiradas disponibles para el Jugador " + numJugadorActual);
 		let textoTiradas = numTiradasMax === 1 ? 'tu única tirada' : 'tus ' + numTiradasMax + ' tiradas';
@@ -144,17 +152,49 @@ function realizarTirada() {
 	numTiradaJugador++;
 
 	// solo se relanzan los dados no guardados de la tirada anterior (hold and reroll)
+	let indicesRelanzados = [];
 	for (let dado = 1; dado <= numDadosMax; dado++) {
 		if (!dadosActuales[dado - 1] || !dadosActuales[dado - 1].guardado) {
 			dadosActuales[dado - 1] = { valor: Math.ceil(Math.random() * numCarasDadoMax), guardado: false };
+			indicesRelanzados.push(dado);
 		}
 	}
 
 	console.log("Tirada " + numTiradaJugador + "/" + numTiradasMax + " de Jugador " + numJugadorActual + " → " + dadosActuales.map(d => d.valor).join(", "));
-	pintarTablero();
+	animarTirada(indicesRelanzados);
 }
 
-function pintarTablero() {
+// Los dados que se relanzan muestran valores aleatorios en bucle durante
+// un instante (con un pequeño balanceo CSS) antes de asentarse en el
+// resultado real, que ya está decidido desde realizarTirada() - la
+// animación es puramente visual, nunca cambia el resultado. Los dados
+// guardados no se tocan. Se bloquean los botones y las casillas de
+// guardar mientras dura para evitar acciones a medio camino (finalizar
+// tiradas, abortar la partida, guardar un dado) sobre un resultado que
+// el jugador aún no ha visto asentarse.
+function animarTirada(indicesRelanzados) {
+	animandoTirada = true;
+	pintarTablero(indicesRelanzados);
+	$("#btnTirada, #btnFin").prop("disabled", true);
+
+	let intervalo = setInterval(function() {
+		indicesRelanzados.forEach(function(dado) {
+			let valorAleatorio = Math.ceil(Math.random() * numCarasDadoMax);
+			let etiqueta = swPoker ? figurasPoker[valorAleatorio] : valorAleatorio;
+			$("#etiquetaDado" + dado).text(etiqueta);
+		});
+	}, INTERVALO_PARPADEO_TIRADA_MS);
+
+	setTimeout(function() {
+		clearInterval(intervalo);
+		animandoTirada = false;
+		pintarTablero();
+		$("#btnFin").prop("disabled", false);
+	}, DURACION_ANIMACION_TIRADA_MS);
+}
+
+function pintarTablero(indicesRodando) {
+	indicesRodando = indicesRodando || [];
 	actualizarTurnoInfo();
 	$("#tablero").html('');
 	for (let dado = 1; dado <= numDadosMax; dado++) {
@@ -162,10 +202,13 @@ function pintarTablero() {
 		let etiqueta = swPoker ? figurasPoker[dadoActual.valor] : dadoActual.valor;
 		let id = dado+'_'+numTiradaJugador+'_'+numJugadorActual; // alternarGuardado obtiene el indice del dado del primer segmento del id
 		let marcado = dadoActual.guardado ? ' checked' : '';
+		let rodando = indicesRodando.includes(dado);
+		let claseRodando = rodando ? ' rodando' : '';
+		let deshabilitado = rodando ? ' disabled' : '';
 		let titulo = dadoActual.guardado ? 'Haz clic para relanzar este dado' : 'Haz clic para guardar este dado';
-		$("#tablero").append('<span class="dado" title="'+titulo+'"><input type="checkbox" id="'+id+'" name="'+id+'" value="'+dadoActual.valor+'"'+marcado+' onchange="alternarGuardado(this)"><label for="'+id+'">'+etiqueta+'</label></span>');
+		$("#tablero").append('<span class="dado'+claseRodando+'" title="'+titulo+'"><input type="checkbox" id="'+id+'" name="'+id+'" value="'+dadoActual.valor+'"'+marcado+deshabilitado+' onchange="alternarGuardado(this)"><label id="etiquetaDado'+dado+'" for="'+id+'">'+etiqueta+'</label></span>');
 	}
-	$("#panelBtnFinTiradas").html('<button type="button" id="btnFinTirada" onclick="finalizarTiradas()"><span class="btn-icon" aria-hidden="true">🏁</span>Finalizar Tiradas</button>');
+	$("#panelBtnFinTiradas").html(animandoTirada ? '' : '<button type="button" id="btnFinTirada" onclick="finalizarTiradas()"><span class="btn-icon" aria-hidden="true">🏁</span>Finalizar Tiradas</button>');
 }
 
 function alternarGuardado(that) {
