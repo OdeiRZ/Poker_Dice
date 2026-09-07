@@ -21,7 +21,7 @@
 			<header class="app-header">
 				<h1>🎲 Poker Dice</h1>
 				<p class="subtitle">El clásico juego de dados de póker</p>
-				<input type="button" class="btn-ghost" id="btnEscala" value="📊 Ver puntuación" onclick="mostrarEscalaPuntuacion()">
+				<button type="button" class="btn-ghost" id="btnEscala" onclick="mostrarEscalaPuntuacion()"><span class="btn-icon" aria-hidden="true">📊</span>Ver puntuación</button>
 			</header>
 
 			<section class="card config-card" id="panelConfiguracion">
@@ -72,7 +72,7 @@
 					</div>
 				</details>
 				<div class="config-actions" id="panelBtnInicio">
-					<input type="button" id="btnInicio" value="Comenzar Juego" onclick="comenzarJuego()">
+					<button type="button" id="btnInicio" onclick="comenzarJuego()"><span class="btn-icon" aria-hidden="true">🎮</span>Comenzar Juego</button>
 				</div>
 			</section>
 

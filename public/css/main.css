@@ -73,6 +73,27 @@ body {
 
 .btn-ghost:hover {
 	background: rgba(255, 255, 255, 0.15);
+	box-shadow: none;
+}
+
+#btnEscala:hover .btn-icon,
+#btnEscala:focus-visible .btn-icon {
+	animation: rebotarEscala 0.4s ease;
+}
+
+@keyframes rebotarEscala {
+	0%, 100% { transform: translateY(0); }
+	50% { transform: translateY(-4px); }
+}
+
+#btnInicio:hover .btn-icon,
+#btnInicio:focus-visible .btn-icon {
+	animation: rebotarInicio 0.4s ease;
+}
+
+@keyframes rebotarInicio {
+	0%, 100% { transform: scale(1); }
+	50% { transform: scale(1.3); }
 }
 
 #panelPuntuacion {
@@ -294,7 +315,11 @@ button:disabled {
 	#btnFin:hover .btn-icon,
 	#btnFin:focus-visible .btn-icon,
 	#btnFinTirada:hover .btn-icon,
-	#btnFinTirada:focus-visible .btn-icon {
+	#btnFinTirada:focus-visible .btn-icon,
+	#btnEscala:hover .btn-icon,
+	#btnEscala:focus-visible .btn-icon,
+	#btnInicio:hover .btn-icon,
+	#btnInicio:focus-visible .btn-icon {
 		animation: none;
 	}
 }
@@ -361,6 +386,11 @@ button:disabled {
 	justify-content: center;
 	gap: 8px;
 	min-height: 1px;
+}
+
+/* sin dados que mostrar (antes de la primera tirada del turno), este
+margen solo deja un hueco vacio entre los botones de encima y de debajo */
+.tablero:not(:empty) {
 	margin: 16px 0;
 }
 

@@ -38,8 +38,15 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - Los dados del tablero son un poco más grandes (56px → 66px, 48px →
   56px en móvil) y el tablero gana margen vertical respecto a los
   botones de encima y de debajo.
+- "Ver puntuación" y "Comenzar Juego" ganan también icono animado (📊 y
+  🎮), igual que el resto de botones de la partida.
 
 ### Corregido
+
+- El margen añadido al tablero de dados dejaba un hueco vacío grande
+  entre los botones de tirar y "Finalizar Juego" mientras aún no se
+  había tirado ningún dado. Ahora ese margen solo se aplica cuando el
+  tablero tiene dados que mostrar.
 
 - Desempate incorrecto cuando dos manos comparten categoría pero con
   formas distintas (con más de 5 dados, un trío doble o una triple
