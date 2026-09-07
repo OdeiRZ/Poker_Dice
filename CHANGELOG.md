@@ -35,6 +35,9 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - Con un solo jugador, el veredicto final ya no dice "Ganador: Jugador
   1" (no hay contra quien ganar) — ahora muestra "Tu resultado: X
   puntos".
+- Los dados del tablero son un poco más grandes (56px → 66px, 48px →
+  56px en móvil) y el tablero gana margen vertical respecto a los
+  botones de encima y de debajo.
 
 ### Corregido
 
