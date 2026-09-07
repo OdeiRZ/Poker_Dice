@@ -16,3 +16,20 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
   diferencia de LudoDex/MIRA MarketLens/PequeDex, que sí compilan su
   frontend antes de publicarlo. Verificado cargando la URL real tras el
   primer despliegue.
+
+### Corregido
+
+- Desempate incorrecto cuando dos manos comparten categoría pero con
+  formas distintas (con más de 5 dados, un trío doble o una triple
+  pareja puntuaban igual que un trío o doble pareja simples, pero el
+  desempate por firma podía dejar ganar a un kicker alto sobre una
+  forma real más fuerte). Ahora se antepone la forma a la firma solo
+  para el desempate interno — la categoría, los puntos y lo que ve el
+  jugador no cambian.
+- El botón "Finalizar Juego" (para abortar la partida a mitad de
+  camino, como ya describe este mismo README) llamaba a la misma
+  función que el final natural de la partida, así que calculaba y
+  anunciaba un "ganador" con las puntuaciones parciales — incluyendo a
+  0 puntos las de jugadores que todavía no habían jugado su turno. Ahora
+  usa una función propia (`abortarJuego()`) que descarta la partida sin
+  anunciar ningún ganador.

@@ -279,6 +279,22 @@ function finalizarJuego() {
 	console.groupEnd();
 }
 
+// Distinta de finalizarJuego(): esa se dispara solo cuando todos los
+// jugadores ya han jugado su turno (desde finalizarTiradas) y por eso
+// tiene sentido anunciar un ganador. El botón "Finalizar Juego" del
+// tablero, en cambio, puede pulsarse en cualquier momento para abortar
+// la partida a medias (así lo describe el propio README) - si llamara a
+// finalizarJuego(), mostrarGanador() compararía también a los jugadores
+// que aún no han jugado (a 0 puntos) como si su turno ya hubiera
+// terminado, anunciando un "ganador" que no es tal.
+function abortarJuego() {
+	console.group("🛑 Abortar Juego");
+	console.log("Partida abortada en el turno de Jugador " + numJugadorActual + " (tirada " + numTiradaJugador + "/" + numTiradasMax + ")");
+	mostrarPantallaConfiguracion();
+	reiniciarTablero();
+	console.groupEnd();
+}
+
 function mostrarPantallaConfiguracion() {
 	$("#panelBtnTirada").hide();
 	$("#panelBtnFin").hide();
