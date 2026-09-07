@@ -141,6 +141,22 @@ body {
 	accent-color: var(--color-primary);
 }
 
+.config-row-checkbox input[type="checkbox"]:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.config-row-disabled label {
+	color: var(--color-muted);
+}
+
+.config-nota {
+	display: none;
+	margin: -6px 0 0;
+	font-size: 0.8rem;
+	color: var(--color-muted);
+}
+
 .opciones-avanzadas {
 	border-top: 1px solid var(--color-border);
 	padding-top: 10px;

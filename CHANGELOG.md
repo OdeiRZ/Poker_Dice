@@ -16,6 +16,14 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
   diferencia de LudoDex/MIRA MarketLens/PequeDex, que sí compilan su
   frontend antes de publicarlo. Verificado cargando la URL real tras el
   primer despliegue.
+- Favicon real (SVG inline con el emoji del dado 🎲), en vez de solo
+  aparecer en el texto del `<title>`.
+
+### Cambiado
+
+- El panel "Ver puntuación" se abre ahora debajo del bloque principal
+  (configuración/partida/resultados) en vez de encima, para no empujarlo
+  hacia abajo cada vez que se consulta.
 
 ### Corregido
 
@@ -33,3 +41,10 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
   0 puntos las de jugadores que todavía no habían jugado su turno. Ahora
   usa una función propia (`abortarJuego()`) que descarta la partida sin
   anunciar ningún ganador.
+- "Dados de Poker" ya no se puede activar con un número de caras
+  distinto de 6. Los símbolos de póker (7, 8, J, Q, K, As) son un mapeo
+  fijo pensado para un dado clásico de 6 caras; con menos caras se veía
+  solo un subconjunto arbitrario de esos símbolos, sin correspondencia
+  con ningún dado real. Ahora la casilla se desactiva sola (y se
+  desmarca) en cuanto se elige un número de caras distinto de 6, con una
+  nota explicando por qué.

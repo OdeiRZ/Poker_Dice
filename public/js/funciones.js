@@ -12,8 +12,26 @@ var dadosActuales = [];
 const figurasPoker = ["", "7", "8", "J", "Q", "K", "•"];
 
 $(document).ready(function() {
-
+	actualizarDisponibilidadSwPoker();
+	$("#numCarasDadoMax").on("change", actualizarDisponibilidadSwPoker);
 });
+
+// Los símbolos de "Dados de Poker" (7, 8, J, Q, K, •) son un mapeo fijo
+// para los 6 valores de un dado clásico - con menos caras se verían solo
+// un subconjunto arbitrario de esos símbolos, sin correspondencia con
+// ningún dado real. Con números (sin este modo) sí tiene sentido variar
+// las caras, como un dado de rol cualquiera.
+function actualizarDisponibilidadSwPoker() {
+	let caras = Number($("#numCarasDadoMax").find(":selected").val());
+	let disponible = caras === 6;
+
+	$("#swPoker").prop("disabled", !disponible);
+	if (!disponible) {
+		$("#swPoker").prop("checked", false);
+	}
+	$("#panelSwPoker").toggleClass("config-row-disabled", !disponible);
+	$("#notaSwPoker").toggle(!disponible);
+}
 
 function comenzarJuego() {
 	console.group("🎲 Comenzar Juego");
