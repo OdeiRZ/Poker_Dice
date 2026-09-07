@@ -283,7 +283,9 @@ button:active {
 	#btnTirada:hover .btn-icon,
 	#btnTirada:focus-visible .btn-icon,
 	#btnFin:hover .btn-icon,
-	#btnFin:focus-visible .btn-icon {
+	#btnFin:focus-visible .btn-icon,
+	#btnFinTirada:hover .btn-icon,
+	#btnFinTirada:focus-visible .btn-icon {
 		animation: none;
 	}
 }
@@ -304,14 +306,27 @@ button:active {
 	background: var(--color-danger-dark);
 }
 
-#panelBtnFinTiradas input[type="button"] {
+#panelBtnFinTiradas input[type="button"],
+#panelBtnFinTiradas button {
 	background: var(--color-accent);
 	color: #3b2a06;
 }
 
-#panelBtnFinTiradas input[type="button"]:hover {
+#panelBtnFinTiradas input[type="button"]:hover,
+#panelBtnFinTiradas button:hover {
 	background: var(--color-accent-dark);
 	color: #ffffff;
+}
+
+#btnFinTirada:hover .btn-icon,
+#btnFinTirada:focus-visible .btn-icon {
+	animation: ondearBandera 0.5s ease;
+}
+
+@keyframes ondearBandera {
+	0%, 100% { transform: rotate(0deg); }
+	25% { transform: rotate(-14deg); }
+	75% { transform: rotate(14deg); }
 }
 
 /* Tablero de juego */

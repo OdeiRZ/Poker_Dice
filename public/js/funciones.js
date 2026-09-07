@@ -164,7 +164,7 @@ function pintarTablero() {
 		let titulo = dadoActual.guardado ? 'Haz clic para relanzar este dado' : 'Haz clic para guardar este dado';
 		$("#tablero").append('<span class="dado" title="'+titulo+'"><input type="checkbox" id="'+id+'" name="'+id+'" value="'+dadoActual.valor+'"'+marcado+' onchange="alternarGuardado(this)"><label for="'+id+'">'+etiqueta+'</label></span>');
 	}
-	$("#panelBtnFinTiradas").html('<input type="button" id="btnFinTirada" value="Finalizar Tiradas" onclick="finalizarTiradas()">');
+	$("#panelBtnFinTiradas").html('<button type="button" id="btnFinTirada" onclick="finalizarTiradas()"><span class="btn-icon" aria-hidden="true">🏁</span>Finalizar Tiradas</button>');
 }
 
 function alternarGuardado(that) {

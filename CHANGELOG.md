@@ -24,10 +24,11 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - El panel "Ver puntuación" se abre ahora debajo del bloque principal
   (configuración/partida/resultados) en vez de encima, para no empujarlo
   hacia abajo cada vez que se consulta.
-- Los botones "Realizar Tirada" y "Finalizar Juego" ganan un icono (🎲 y
-  🚪) con una pequeña animación al pasar el ratón o el foco (el dado
-  gira, la puerta se sacude), en vez de ser solo texto plano. Se
-  respeta `prefers-reduced-motion` desactivando esas animaciones.
+- Los botones "Realizar Tirada", "Finalizar Tiradas" y "Finalizar Juego"
+  ganan un icono (🎲, 🏁 y 🚪) con una pequeña animación al pasar el
+  ratón o el foco (el dado gira, la bandera ondea, la puerta se
+  sacude), en vez de ser solo texto plano. Se respeta
+  `prefers-reduced-motion` desactivando esas animaciones.
 
 ### Corregido
 
