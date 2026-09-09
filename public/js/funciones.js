@@ -104,6 +104,7 @@ function mostrarEscalaPuntuacion() {
 	let panel = el("panelPuntuacion");
 	if (!panel.classList.contains("is-hidden")) {
 		alternarVisibilidad(panel, false);
+		el("btnEscala").setAttribute("aria-expanded", "false");
 		return;
 	}
 
@@ -119,6 +120,7 @@ function mostrarEscalaPuntuacion() {
 
 	panel.innerHTML = '<h2>Ranking de manos</h2>' + filas;
 	alternarVisibilidad(panel, true);
+	el("btnEscala").setAttribute("aria-expanded", "true");
 }
 
 function inicializarPuntuaciones() {
