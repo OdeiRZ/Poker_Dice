@@ -202,7 +202,12 @@ function pintarTablero(indicesRodando) {
 		let posicionRodando = indicesRodando.indexOf(dado);
 		let rodando = posicionRodando !== -1;
 		let claseRodando = rodando ? ' rodando' : '';
-		let deshabilitado = rodando ? ' disabled' : '';
+		// animandoTirada (no solo rodando) - un dado ya guardado no esta cayendo
+		// el mismo, pero debe quedar igual de bloqueado mientras otros lo hacen,
+		// tal y como describen el README y el CHANGELOG ("se bloquean... las
+		// casillas de guardar" mientras dura la animacion, sin excluir a los ya
+		// guardados).
+		let deshabilitado = animandoTirada ? ' disabled' : '';
 		let estiloRetraso = rodando ? ' style="animation-delay:'+(posicionRodando * RETRASO_ENTRE_DADOS_MS)+'ms"' : '';
 		let titulo = dadoActual.guardado ? 'Haz clic para relanzar este dado' : 'Haz clic para guardar este dado';
 		$("#tablero").append('<span class="dado'+claseRodando+'" title="'+titulo+'"><input type="checkbox" id="'+id+'" name="'+id+'" value="'+dadoActual.valor+'"'+marcado+deshabilitado+' onchange="alternarGuardado(this)"><label id="etiquetaDado'+dado+'" for="'+id+'"'+estiloRetraso+'>'+etiqueta+'</label></span>');
