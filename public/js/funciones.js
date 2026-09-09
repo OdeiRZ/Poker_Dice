@@ -155,7 +155,11 @@ function realizarTirada() {
 	let indicesRelanzados = [];
 	for (let dado = 1; dado <= numDadosMax; dado++) {
 		if (!dadosActuales[dado - 1] || !dadosActuales[dado - 1].guardado) {
-			dadosActuales[dado - 1] = { valor: Math.ceil(Math.random() * numCarasDadoMax), guardado: false };
+			// Math.floor(...) + 1, no Math.ceil(...) - con Math.ceil, si
+			// Math.random() devolviera exactamente 0 (posible, aunque
+			// extremadamente improbable), Math.ceil(0) daria un valor de dado
+			// 0, fuera del rango 1-numCarasDadoMax.
+			dadosActuales[dado - 1] = { valor: Math.floor(Math.random() * numCarasDadoMax) + 1, guardado: false };
 			indicesRelanzados.push(dado);
 		}
 	}
