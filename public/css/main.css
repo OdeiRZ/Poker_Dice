@@ -245,7 +245,6 @@ body {
 
 /* Botones */
 
-input[type="button"],
 button {
 	padding: 10px 20px;
 	margin: 4px 0;
@@ -260,19 +259,16 @@ button {
 	transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
 }
 
-input[type="button"]:hover,
 button:hover {
 	background: var(--color-primary-dark);
 	box-shadow: 0 4px 10px rgba(10, 40, 55, 0.25);
 }
 
-input[type="button"]:active,
 button:active {
 	transform: scale(0.97);
 	box-shadow: none;
 }
 
-input[type="button"]:disabled,
 button:disabled {
 	background: var(--color-muted);
 	color: rgba(255, 255, 255, 0.85);
@@ -312,23 +308,19 @@ button:disabled {
 	75% { transform: translateX(2px) rotate(8deg); }
 }
 
-#panelBtnFin input[type="button"],
 #panelBtnFin button {
 	background: var(--color-danger);
 }
 
-#panelBtnFin input[type="button"]:hover,
 #panelBtnFin button:hover {
 	background: var(--color-danger-dark);
 }
 
-#panelBtnFinTiradas input[type="button"],
 #panelBtnFinTiradas button {
 	background: var(--color-accent);
 	color: #3b2a06;
 }
 
-#panelBtnFinTiradas input[type="button"]:hover,
 #panelBtnFinTiradas button:hover {
 	background: var(--color-accent-dark);
 	color: #ffffff;
