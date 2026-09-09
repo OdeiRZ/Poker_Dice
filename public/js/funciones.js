@@ -14,9 +14,25 @@ const figurasPoker = ["", "7", "8", "J", "Q", "K", "•"];
 const DURACION_ANIMACION_TIRADA_MS = 600;
 const RETRASO_ENTRE_DADOS_MS = 40;
 
-$(document).ready(function() {
+// Atajo local por id - el proyecto no necesitaba jQuery para nada mas
+// que esto, mostrar/ocultar y un puñado de props, asi que no justificaba
+// la dependencia (vendorizada, sin parches desde hace años).
+function el(id) {
+	return document.getElementById(id);
+}
+
+// Mismo comportamiento que el .toggle(bool) de jQuery, pero via una
+// clase de utilidad en vez de tocar el display inline - asi cada
+// elemento recupera su propio display (flex, block, inline...) definido
+// en el CSS al quitarle la clase, sin tener que acertar aqui que valor
+// le corresponde a cada uno.
+function alternarVisibilidad(elemento, visible) {
+	elemento.classList.toggle("is-hidden", !visible);
+}
+
+document.addEventListener("DOMContentLoaded", function() {
 	actualizarDisponibilidadSwPoker();
-	$("#numCarasDadoMax").on("change", actualizarDisponibilidadSwPoker);
+	el("numCarasDadoMax").addEventListener("change", actualizarDisponibilidadSwPoker);
 });
 
 // Los símbolos de "Dados de Poker" (7, 8, J, Q, K, •) son un mapeo fijo
@@ -25,15 +41,15 @@ $(document).ready(function() {
 // ningún dado real. Con números (sin este modo) sí tiene sentido variar
 // las caras, como un dado de rol cualquiera.
 function actualizarDisponibilidadSwPoker() {
-	let caras = Number($("#numCarasDadoMax").find(":selected").val());
+	let caras = Number(el("numCarasDadoMax").value);
 	let disponible = caras === 6;
 
-	$("#swPoker").prop("disabled", !disponible);
+	el("swPoker").disabled = !disponible;
 	if (!disponible) {
-		$("#swPoker").prop("checked", false);
+		el("swPoker").checked = false;
 	}
-	$("#panelSwPoker").toggleClass("config-row-disabled", !disponible);
-	$("#notaSwPoker").toggle(!disponible);
+	el("panelSwPoker").classList.toggle("config-row-disabled", !disponible);
+	alternarVisibilidad(el("notaSwPoker"), !disponible);
 }
 
 function comenzarJuego() {
@@ -47,18 +63,18 @@ function comenzarJuego() {
 }
 
 function inicializarVariables() {
-	numJugadoresMax = Number($("#numJugadoresMax").find(":selected").val());
-	numDadosMax = Number($("#numDadosMax").find(":selected").val());
-	numCarasDadoMax = Number($("#numCarasDadoMax").find(":selected").val());
-	numTiradasMax = Number($("#numTiradasMax").find(":selected").val());
-	swPoker = $("#swPoker").is(":checked");
+	numJugadoresMax = Number(el("numJugadoresMax").value);
+	numDadosMax = Number(el("numDadosMax").value);
+	numCarasDadoMax = Number(el("numCarasDadoMax").value);
+	numTiradasMax = Number(el("numTiradasMax").value);
+	swPoker = el("swPoker").checked;
 	numTiradaJugador = 0;
 	numJugadorActual = 1;
 	dadosActuales = [];
 	animandoTirada = false;
 	puntFinalJugadores = [];
 	firmasJugadores = [];
-	$("#resultados").html('');
+	el("resultados").innerHTML = '';
 }
 
 function validarConfiguracion() {
@@ -68,8 +84,8 @@ function validarConfiguracion() {
 }
 
 function obtenerEscalaPuntuacion() {
-	let dados = Number($("#numDadosMax").find(":selected").val());
-	let caras = Number($("#numCarasDadoMax").find(":selected").val());
+	let dados = Number(el("numDadosMax").value);
+	let caras = Number(el("numCarasDadoMax").value);
 	// "disponible" exige el minimo de dados en que la mano es distinguible de una categoria superior
 	// (p.ej. con 4 dados un trio de 3 iguales + 1 kicker no cabe: los 4 iguales ya serian Repoker)
 	return [
@@ -85,9 +101,9 @@ function obtenerEscalaPuntuacion() {
 }
 
 function mostrarEscalaPuntuacion() {
-	let panel = $("#panelPuntuacion");
-	if (panel.is(":visible")) {
-		panel.hide();
+	let panel = el("panelPuntuacion");
+	if (!panel.classList.contains("is-hidden")) {
+		alternarVisibilidad(panel, false);
 		return;
 	}
 
@@ -101,7 +117,8 @@ function mostrarEscalaPuntuacion() {
 			'</div>';
 	}).join('');
 
-	panel.html('<h2>Ranking de manos</h2>' + filas).show();
+	panel.innerHTML = '<h2>Ranking de manos</h2>' + filas;
+	alternarVisibilidad(panel, true);
 }
 
 function inicializarPuntuaciones() {
@@ -113,10 +130,10 @@ function inicializarPuntuaciones() {
 }
 
 function mostrarPantallaJuego() {
-	$("#panelConfiguracion").hide();
-	$("#panelJuego").show();
-	$("#panelBtnTirada").show();
-	$("#panelBtnFin").show();
+	alternarVisibilidad(el("panelConfiguracion"), false);
+	alternarVisibilidad(el("panelJuego"), true);
+	alternarVisibilidad(el("panelBtnTirada"), true);
+	alternarVisibilidad(el("panelBtnFin"), true);
 	actualizarTurnoInfo();
 }
 
@@ -124,16 +141,16 @@ function actualizarTurnoInfo() {
 	let detalle = numTiradaJugador > 0
 		? ' - Tirada ' + numTiradaJugador + '/' + numTiradasMax
 		: ' - Pulsa "Realizar Tirada" para empezar';
-	$("#turnoInfo").html('<strong class="turno-info">Jugador ' + numJugadorActual + detalle + '</strong>');
-	$("#btnTirada").prop("disabled", numTiradaJugador >= numTiradasMax);
+	el("turnoInfo").innerHTML = '<strong class="turno-info">Jugador ' + numJugadorActual + detalle + '</strong>';
+	el("btnTirada").disabled = numTiradaJugador >= numTiradasMax;
 }
 
 function mostrarAviso(mensaje) {
-	$("#avisoJuego").html(mensaje);
+	el("avisoJuego").innerHTML = mensaje;
 }
 
 function limpiarAviso() {
-	$("#avisoJuego").html('');
+	el("avisoJuego").innerHTML = '';
 }
 
 function realizarTirada() {
@@ -180,20 +197,22 @@ function realizarTirada() {
 function animarTirada(indicesRelanzados) {
 	animandoTirada = true;
 	pintarTablero(indicesRelanzados);
-	$("#btnTirada, #btnFin").prop("disabled", true);
+	el("btnTirada").disabled = true;
+	el("btnFin").disabled = true;
 
 	let duracionTotal = DURACION_ANIMACION_TIRADA_MS + (indicesRelanzados.length - 1) * RETRASO_ENTRE_DADOS_MS;
 	setTimeout(function() {
 		animandoTirada = false;
 		pintarTablero();
-		$("#btnFin").prop("disabled", false);
+		el("btnFin").disabled = false;
 	}, duracionTotal);
 }
 
 function pintarTablero(indicesRodando) {
 	indicesRodando = indicesRodando || [];
 	actualizarTurnoInfo();
-	$("#tablero").html('');
+	let tablero = el("tablero");
+	tablero.innerHTML = '';
 	for (let dado = 1; dado <= numDadosMax; dado++) {
 		let dadoActual = dadosActuales[dado - 1];
 		let etiqueta = swPoker ? figurasPoker[dadoActual.valor] : dadoActual.valor;
@@ -210,9 +229,9 @@ function pintarTablero(indicesRodando) {
 		let deshabilitado = animandoTirada ? ' disabled' : '';
 		let estiloRetraso = rodando ? ' style="animation-delay:'+(posicionRodando * RETRASO_ENTRE_DADOS_MS)+'ms"' : '';
 		let titulo = dadoActual.guardado ? 'Haz clic para relanzar este dado' : 'Haz clic para guardar este dado';
-		$("#tablero").append('<span class="dado'+claseRodando+'" title="'+titulo+'"><input type="checkbox" id="'+id+'" name="'+id+'" value="'+dadoActual.valor+'"'+marcado+deshabilitado+' onchange="alternarGuardado(this)"><label id="etiquetaDado'+dado+'" for="'+id+'"'+estiloRetraso+'>'+etiqueta+'</label></span>');
+		tablero.insertAdjacentHTML('beforeend', '<span class="dado'+claseRodando+'" title="'+titulo+'"><input type="checkbox" id="'+id+'" name="'+id+'" value="'+dadoActual.valor+'"'+marcado+deshabilitado+' onchange="alternarGuardado(this)"><label id="etiquetaDado'+dado+'" for="'+id+'"'+estiloRetraso+'>'+etiqueta+'</label></span>');
 	}
-	$("#panelBtnFinTiradas").html(animandoTirada ? '' : '<button type="button" id="btnFinTirada" onclick="finalizarTiradas()"><span class="btn-icon" aria-hidden="true">🏁</span>Finalizar Tiradas</button>');
+	el("panelBtnFinTiradas").innerHTML = animandoTirada ? '' : '<button type="button" id="btnFinTirada" onclick="finalizarTiradas()"><span class="btn-icon" aria-hidden="true">🏁</span>Finalizar Tiradas</button>';
 }
 
 function alternarGuardado(that) {
@@ -285,7 +304,7 @@ function finalizarTiradas() {
 	console.log("Dados: " + valores.join(", ") + " → " + mano.nombre + " (" + mano.puntos + " pts)");
 
 	let etiquetasFirma = mano.firma.map(v => swPoker ? figurasPoker[v] : v).join(", ");
-	$("#resultados").append(
+	el("resultados").insertAdjacentHTML('beforeend',
 		'<div class="resultado-jugador">' +
 			'<div class="resultado-fila">' +
 				'<span class="jugador-nombre">Jugador ' + numJugadorActual + '</span>' +
@@ -317,7 +336,7 @@ function mostrarGanador() {
 	// un veredicto trivial y confuso, mejor mostrar el resultado sin más
 	if (numJugadoresMax === 1) {
 		console.log("Resultado: " + puntFinalJugadores[1] + " pts");
-		$("#resultados").append(
+		el("resultados").insertAdjacentHTML('beforeend',
 			'<div class="veredicto veredicto-ganador">🎯 Tu resultado: ' + puntFinalJugadores[1] + ' puntos</div>'
 		);
 		return;
@@ -335,12 +354,12 @@ function mostrarGanador() {
 
 	if (ganadores.length > 1) {
 		console.log("Resultado: empate entre Jugadores " + ganadores.join(", ") + " (" + puntFinalJugadores[ganadores[0]] + " pts)");
-		$("#resultados").append(
+		el("resultados").insertAdjacentHTML('beforeend',
 			'<div class="veredicto veredicto-empate">🤝 Empate entre Jugadores ' + ganadores.join(", ") + ' (' + puntFinalJugadores[ganadores[0]] + ' puntos)</div>'
 		);
 	} else {
 		console.log("Resultado: gana Jugador " + ganadores[0] + " (" + puntFinalJugadores[ganadores[0]] + " pts)");
-		$("#resultados").append(
+		el("resultados").insertAdjacentHTML('beforeend',
 			'<div class="veredicto veredicto-ganador">🏆 Ganador: Jugador ' + ganadores[0] + ' (' + puntFinalJugadores[ganadores[0]] + ' puntos)</div>'
 		);
 	}
@@ -372,16 +391,16 @@ function abortarJuego() {
 }
 
 function mostrarPantallaConfiguracion() {
-	$("#panelBtnTirada").hide();
-	$("#panelBtnFin").hide();
-	$("#panelJuego").hide();
-	$("#panelConfiguracion").show();
+	alternarVisibilidad(el("panelBtnTirada"), false);
+	alternarVisibilidad(el("panelBtnFin"), false);
+	alternarVisibilidad(el("panelJuego"), false);
+	alternarVisibilidad(el("panelConfiguracion"), true);
 }
 
 function reiniciarTablero() {
-	$("#tablero").html('');
-	$("#turnoInfo").html('');
-	$("#panelBtnFinTiradas").html('');
+	el("tablero").innerHTML = '';
+	el("turnoInfo").innerHTML = '';
+	el("panelBtnFinTiradas").innerHTML = '';
 	limpiarAviso();
 	dadosActuales = [];
 }

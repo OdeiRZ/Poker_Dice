@@ -13,7 +13,6 @@
 		<meta name="keywords" content="poker, dice, odei, game" />
 		<meta name="author" content="Odei Riveiro Zafra" />
 		<link rel="stylesheet" type="text/css" href="css/main.css" />
-		<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
 		<script type="text/javascript" src="js/funciones.js"></script>
 	</head>
 	<body>
@@ -38,7 +37,7 @@
 					<label for="swPoker">Dados de Poker</label>
 					<input type="checkbox" id="swPoker" checked>
 				</div>
-				<p class="config-nota" id="notaSwPoker">Los símbolos de póker (7, 8, J, Q, K, As) solo existen en un dado de 6 caras.</p>
+				<p class="config-nota is-hidden" id="notaSwPoker">Los símbolos de póker (7, 8, J, Q, K, As) solo existen en un dado de 6 caras.</p>
 				<details class="opciones-avanzadas">
 					<summary>Opciones avanzadas</summary>
 					<div class="opciones-avanzadas-body">
@@ -76,24 +75,24 @@
 				</div>
 			</section>
 
-			<section class="card game-card" id="panelJuego">
+			<section class="card game-card is-hidden" id="panelJuego">
 				<div id="turnoInfo"></div>
 				<div id="avisoJuego"></div>
 				<div class="game-actions">
-					<span id="panelBtnTirada">
+					<span id="panelBtnTirada" class="is-hidden">
 						<button type="button" id="btnTirada" onclick="realizarTirada()"><span class="btn-icon" aria-hidden="true">🎲</span>Realizar Tirada</button>
 					</span>
 					<span id="panelBtnFinTiradas"></span>
 				</div>
 				<div id="tablero" class="tablero"></div>
-				<div class="game-actions" id="panelBtnFin">
+				<div class="game-actions is-hidden" id="panelBtnFin">
 					<button type="button" id="btnFin" onclick="abortarJuego()"><span class="btn-icon" aria-hidden="true">🚪</span>Finalizar Juego</button>
 				</div>
 			</section>
 
 			<section id="resultados" class="card resultados"></section>
 
-			<section class="card puntuacion-card" id="panelPuntuacion"></section>
+			<section class="card puntuacion-card is-hidden" id="panelPuntuacion"></section>
 		</div>
 	</body>
 </html>

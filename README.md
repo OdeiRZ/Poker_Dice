@@ -1,6 +1,6 @@
 # Poker Dice
 
-Juego de dados de póker (Poker Dice) jugable en el navegador, desarrollado con HTML, CSS y JavaScript (jQuery), sin backend ni dependencias externas.
+Juego de dados de póker (Poker Dice) jugable en el navegador, desarrollado con HTML, CSS y JavaScript nativo, sin backend ni dependencias externas.
 
 **En vivo**: [poker-dice.pages.dev](https://poker-dice.pages.dev).
 
@@ -70,9 +70,7 @@ frontend, aquí sin backend que desplegar aparte.
 public/
 ├── index.html          # Estructura y controles de la interfaz
 ├── css/main.css        # Estilos
-└── js/
-    ├── jquery-1.12.4.min.js
-    └── funciones.js     # Lógica del juego
+└── js/funciones.js     # Lógica del juego
 ```
 
 ## Desarrollo
